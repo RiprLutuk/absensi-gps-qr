@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .card {
+        @apply bg-white dark:bg-gray-800 shadow-sm rounded-xl border border-gray-100 dark:border-gray-700;
+    }
+
+    /* Scanner Native Support */
+    body.scanner-active {
+        background: transparent !important;
+    }
+    body.scanner-active nav,
+    body.scanner-active .card,
+    body.scanner-active header,
+    body.scanner-active footer,
+    body.scanner-active .fixed {
+        visibility: hidden !important;
+    }
+    /* Allow specific elements if needed, but usually native scanner is full screen */
+}
+
+@layer utilities {
+    .pulse-dot {
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+    }
+    @keyframes scaleIn {
+        0% { transform: scale(0); opacity: 0; }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); opacity: 1; }
+    }
+    @keyframes slideDown {
+        0% { transform: translateY(-20px); opacity: 0; }
+        100% { transform: translateY(0); opacity: 1; }
+    }
+    /* Provide utility classes if not using arbitrary values */
+    .animate-scale-in { animation: scaleIn 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+    .animate-slide-down { animation: slideDown 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+}
+
+[x-cloak] {
+    display: none;
+}
+

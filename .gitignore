@@ -1,0 +1,40 @@
+/.phpunit.cache
+/node_modules
+/public/build
+/public/temp
+/public/hot
+/public/storage
+/storage/*.key
+/vendor
+.env
+.env.backup
+.env.production
+.phpactor.json
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+auth.json
+npm-debug.log
+yarn-error.log
+/.fleet
+/.idea
+/.vscode
+
+# System
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+make_favicon_round.py
+remove_bg.py
+
+# Debug Scripts
+debug_*.php
+verify_fix.php
+
+# Local Setup
+setup
+setup-database
