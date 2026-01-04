@@ -185,14 +185,13 @@ adb logcat | grep Capacitor
 
 ### User/Karyawan (Mobile View)
 
-| Login & Security | Utama & Scan |
+| Login & Lupa Password | Dashboard & Scan |
 |---|---|
-| ![Login](./screenshots/user-login-mobile.png) <br> **Login Page** | ![Home](./screenshots/user-home-mobile-full.png) <br> **Dashboard** |
-| ![Forgot](./screenshots/user-forgot-mobile-full.png) <br> **Lupa Password** | ![Scan](./screenshots/user-full-scan-mobile-full.png) <br> **Scanner Interface** |
+| <img src="./screenshots/user-login-mobile.png" width="180px"> <img src="./screenshots/user-forgot-mobile-full.png" width="180px"> | <img src="./screenshots/user-home-mobile-full.png" width="180px"> <img src="./screenshots/user-full-scan-mobile-full.png" width="180px"> |
 
 | Menu & Fitur Lainnya |
 |---|
-| ![Riwayat](./screenshots/user-history-mobile-full.png) ![Profil](./screenshots/user-profile-mobile-full.png) ![Izin](./screenshots/user-apply-leave-mobile-full.png) |
+| <img src="./screenshots/user-history-mobile-full.png" width="160px"> <img src="./screenshots/user-profile-mobile-full.png" width="160px"> <img src="./screenshots/user-apply-leave-mobile-full.png" width="160px"> |
 | *Riwayat Absensi • Profil User • Pengajuan Izin* |
 
 ### Admin & Superadmin (Light vs Dark)
