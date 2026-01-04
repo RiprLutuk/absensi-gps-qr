@@ -15,6 +15,7 @@ Aplikasi absensi karyawan yang modern, responsif, dan kaya fitur menggunakan QR 
 *   **Database**: MySQL/MariaDB
 *   **QR Code**: [Endroid QR Code](https://github.com/endroid/qr-code) (Generation), [html5-qrcode](https://github.com/mebjas/html5-qrcode) (Scanning)
 *   **Maps**: [Leaflet.js](https://leafletjs.com/) & [OpenStreetMap](https://www.openstreetmap.org/)
+*   **Mobile / Cross-platform**: [Capacitor](https://capacitorjs.com/) (Native Runtime for iOS & Android)
 *   **UI Components**: [Tom Select](https://tom-select.js.org/) (Searchable Dropdowns), [Chart.js](https://www.chartjs.org/)
 
 ## Fitur Unggulan
@@ -35,6 +36,10 @@ Aplikasi absensi karyawan yang modern, responsif, dan kaya fitur menggunakan QR 
 *   **Automatic Export Preview**: Pratinjau data ekspor (Excel) muncul otomatis saat memfilter (Tahun, Bulan, Divisi, dll).
 *   **Dynamic Filters**: Filter data berdasarkan tahun, bulan, divisi, jabatan, dan pendidikan.
 *   **Activity Logs**: Log aktivitas admin yang diringkas (aggregated) untuk menghindari spam data.
+
+### 📱 Dukungan Multi-platform
+*   **Web App**: Akses melalui browser (Chrome, Safari, dll) dengan tampilan responsif.
+*   **Android / iOS Native**: Dibangun dengan **Capacitor** untuk dikompilasi menjadi aplikasi native (APK), memungkinkan akses fitur native seperti Kamera dan Geolocation yang lebih stabil.
 
 ## Instalasi
 
