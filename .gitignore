@@ -1,5 +1,6 @@
 /.phpunit.cache
 /node_modules
+/bootstrap/cache/*.php
 /public/build
 /public/temp
 /public/hot
@@ -38,3 +39,4 @@ verify_fix.php
 # Local Setup
 setup
 setup-database
+deploy.sh
