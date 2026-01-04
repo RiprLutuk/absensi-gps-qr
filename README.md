@@ -183,15 +183,17 @@ adb logcat | grep Capacitor
 
 ## Screenshot
 
-### User/Karyawan
+### User/Karyawan (Mobile View)
 
-| Scan Page | Scan Page (Mobile) |
+| Login & Security | Utama & Scan |
 |---|---|
-|![Scan](./screenshots/user-scan-mobile-full.png)|![Scan mobile](./screenshots/user-home-mobile-full.png)|
+| ![Login](./screenshots/user-login-mobile.png) <br> **Login Page** | ![Home](./screenshots/user-home-mobile-full.png) <br> **Dashboard** |
+| ![Forgot](./screenshots/user-forgot-mobile-full.png) <br> **Lupa Password** | ![Scan](./screenshots/user-full-scan-mobile-full.png) <br> **Scanner Interface** |
 
-| Pengajuan Absensi | Riwayat Absensi Karyawan |
-|---|---|
-|![Pengajuan Absensi](./screenshots/user-apply-leave-mobile-full.png)|![Riwayat Absensi](./screenshots/user-history-mobile-full.png)|
+| Menu & Fitur Lainnya |
+|---|
+| ![Riwayat](./screenshots/user-history-mobile-full.png) ![Profil](./screenshots/user-profile-mobile-full.png) ![Izin](./screenshots/user-apply-leave-mobile-full.png) |
+| *Riwayat Absensi • Profil User • Pengajuan Izin* |
 
 ### Admin & Superadmin (Light vs Dark)
 
