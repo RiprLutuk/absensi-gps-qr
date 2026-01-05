@@ -62,6 +62,10 @@
                                 <x-dropdown-link href="{{ route('admin.masters.admin') }}" :active="request()->routeIs('admin.masters.admin')" wire:navigate>
                                     {{ __('Admin') }}
                                 </x-dropdown-link>
+                                <hr>
+                                <x-dropdown-link href="{{ route('admin.settings') }}" :active="request()->routeIs('admin.settings')" wire:navigate>
+                                    {{ __('App Settings') }}
+                                </x-dropdown-link>
                             </x-slot>
                         </x-nav-dropdown>
                         <x-nav-dropdown :active="request()->routeIs('admin.import-export.*')" triggerClasses="text-nowrap">
@@ -203,6 +207,9 @@
                 </x-responsive-nav-link>
                 <x-responsive-nav-link href="{{ route('admin.masters.admin') }}" :active="request()->routeIs('admin.masters.admin')" wire:navigate>
                     {{ __('Admin Management') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link href="{{ route('admin.settings') }}" :active="request()->routeIs('admin.settings')" wire:navigate>
+                    {{ __('App Settings') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link href="{{ route('admin.import-export.users') }}" :active="request()->routeIs('admin.import-export')" wire:navigate>
                     Import & Export Karyawan/Admin

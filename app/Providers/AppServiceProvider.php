@@ -19,6 +19,17 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        \Illuminate\Support\Facades\RateLimiter::for('global', function (\Illuminate\Http\Request $request) {
+            $limit = (int) \App\Models\Setting::getValue('security.rate_limit_global', 1000);
+            return \Illuminate\Cache\RateLimiting\Limit::perMinute($limit)->by($request->user()?->id ?: $request->ip());
+        });
+
+        \Illuminate\Support\Facades\RateLimiter::for('login', function (\Illuminate\Http\Request $request) {
+            $limit = (int) \App\Models\Setting::getValue('security.rate_limit_login', 5);
+            return \Illuminate\Cache\RateLimiting\Limit::perMinute($limit)->by($request->ip());
+        });
+
+
         \Illuminate\Support\Facades\Event::listen(\Illuminate\Auth\Events\Login::class, function ($event) {
             \App\Models\ActivityLog::create([
                 'user_id' => $event->user->id,

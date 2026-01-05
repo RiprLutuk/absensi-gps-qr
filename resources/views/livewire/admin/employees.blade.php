@@ -241,25 +241,25 @@
           </div>
         @endif
         <div class="mt-4">
-          <x-label for="name">Nama Karyawan</x-label>
-          <x-input id="name" class="mt-1 block w-full" type="text" wire:model="form.name" />
+          <x-label for="create_name">Nama Karyawan</x-label>
+          <x-input id="create_name" class="mt-1 block w-full" type="text" wire:model="form.name" autocomplete="off" />
           @error('form.name')
             <x-input-error for="form.name" class="mt-2" message="{{ $message }}" />
           @enderror
         </div>
         <div class="mt-4 flex flex-col gap-4 sm:flex-row sm:gap-3">
           <div class="w-full">
-            <x-label for="email">{{ __('Email') }}</x-label>
-            <x-input id="email" class="mt-1 block w-full" type="email" wire:model="form.email"
-              placeholder="example@example.com" required />
+            <x-label for="create_email">{{ __('Email') }}</x-label>
+            <x-input id="create_email" class="mt-1 block w-full" type="email" wire:model="form.email"
+              placeholder="example@example.com" required autocomplete="off" />
             @error('form.email')
               <x-input-error for="form.email" class="mt-2" message="{{ $message }}" />
             @enderror
           </div>
           <div class="w-full">
-            <x-label for="nip">NIP</x-label>
-            <x-input id="nip" class="mt-1 block w-full" type="text" wire:model="form.nip"
-              placeholder="12345678" required />
+            <x-label for="create_nip">NIP</x-label>
+            <x-input id="create_nip" class="mt-1 block w-full" type="text" wire:model="form.nip"
+              placeholder="12345678" required autocomplete="off" />
             @error('form.nip')
               <x-input-error for="form.nip" class="mt-2" message="{{ $message }}" />
             @enderror
@@ -267,9 +267,9 @@
         </div>
         <div class="mt-4 flex flex-col gap-4 sm:flex-row sm:gap-3">
           <div class="w-full">
-            <x-label for="password">{{ __('Password') }}</x-label>
-            <x-input id="password" class="mt-1 block w-full" type="password" wire:model="form.password"
-              placeholder="New Password" />
+            <x-label for="create_password">{{ __('Password') }}</x-label>
+            <x-input id="create_password" class="mt-1 block w-full" type="password" wire:model="form.password"
+              placeholder="New Password" autocomplete="new-password" />
             <p class="text-sm dark:text-gray-400">Default password: <b>password</b></p>
             @error('form.password')
               <x-input-error for="form.password" class="mt-2" message="{{ $message }}" />
@@ -281,12 +281,12 @@
             <x-label for="gender">{{ __('Gender') }}</x-label>
             <div class="my-3 flex flex-row gap-5">
               <div class="flex items-center">
-                <input type="radio" id="gender-male" wire:model="form.gender" value="male" />
-                <x-label for="gender-male" class="ml-2">{{ __('Male') }}</x-label>
+                <input type="radio" id="create_gender_male" wire:model="form.gender" value="male" />
+                <x-label for="create_gender_male" class="ml-2">{{ __('Male') }}</x-label>
               </div>
               <div class="flex items-center">
-                <input type="radio" id="gender-female" wire:model="form.gender" value="female" />
-                <x-label for="gender-female" class="ml-2">{{ __('Female') }}</x-label>
+                <input type="radio" id="create_gender_female" wire:model="form.gender" value="female" />
+                <x-label for="create_gender_female" class="ml-2">{{ __('Female') }}</x-label>
               </div>
             </div>
             @error('form.gender')
@@ -294,9 +294,9 @@
             @enderror
           </div>
           <div class="w-full">
-            <x-label for="phone">{{ __('Phone') }}</x-label>
-            <x-input id="phone" class="mt-1 block w-full" type="number" wire:model="form.phone"
-              placeholder="+628123456789" />
+            <x-label for="create_phone">{{ __('Phone') }}</x-label>
+            <x-input id="create_phone" class="mt-1 block w-full" type="number" wire:model="form.phone"
+              placeholder="+628123456789" autocomplete="off" />
             @error('form.phone')
               <x-input-error for="form.phone" class="mt-2" message="{{ $message }}" />
             @enderror
@@ -304,16 +304,16 @@
         </div>
         <div class="mt-4 flex flex-col gap-4 sm:flex-row sm:gap-3">
           <div class="w-full">
-            <x-label for="birth_date">{{ __('Birth Date') }}</x-label>
-            <x-input id="birth_date" class="mt-1 block w-full" type="date" wire:model="form.birth_date" />
+            <x-label for="create_birth_date">{{ __('Birth Date') }}</x-label>
+            <x-input id="create_birth_date" class="mt-1 block w-full" type="date" wire:model="form.birth_date" autocomplete="off" />
             @error('form.birth_date')
               <x-input-error for="form.birth_date" class="mt-2" message="{{ $message }}" />
             @enderror
           </div>
           <div class="w-full">
-            <x-label for="birth_place">{{ __('Birth Place') }}</x-label>
-            <x-input id="birth_place" class="mt-1 block w-full" type="text" wire:model="form.birth_place"
-              placeholder="Jakarta" />
+            <x-label for="create_birth_place">{{ __('Birth Place') }}</x-label>
+            <x-input id="create_birth_place" class="mt-1 block w-full" type="text" wire:model="form.birth_place"
+              placeholder="Jakarta" autocomplete="off" />
             @error('form.birth_place')
               <x-input-error for="form.birth_place" class="mt-2" message="{{ $message }}" />
             @enderror
@@ -321,26 +321,26 @@
         </div>
         <div class="mt-4 flex flex-col gap-4 sm:flex-row sm:gap-3">
           <div class="w-full">
-            <x-label for="city">{{ __('City') }}</x-label>
-            <x-input id="city" class="mt-1 block w-full" type="text" wire:model="form.city"
-              placeholder="Domisili" />
+            <x-label for="create_city">{{ __('City') }}</x-label>
+            <x-input id="create_city" class="mt-1 block w-full" type="text" wire:model="form.city"
+              placeholder="Domisili" autocomplete="off" />
             @error('form.city')
               <x-input-error for="form.city" class="mt-2" message="{{ $message }}" />
             @enderror
           </div>
           <div class="w-full">
-            <x-label for="address">{{ __('Address') }}</x-label>
-            <x-input id="address" class="mt-1 block w-full" type="text" wire:model="form.address"
-              placeholder="Jl. Jend. Sudirman" />
+            <x-label for="create_address">{{ __('Address') }}</x-label>
+            <x-input id="create_address" class="mt-1 block w-full" type="text" wire:model="form.address"
+              placeholder="Jl. Jend. Sudirman" autocomplete="off" />
             @error('form.address')
               <x-input-error for="form.address" class="mt-2" message="{{ $message }}" />
             @enderror
           </div>
         </div>
         <div class="mt-4">
-          <x-label for="form.division_id" value="{{ __('Division') }}" />
+          <x-label for="create_division" value="{{ __('Division') }}" />
           <div class="mt-1 block w-full">
-            <x-tom-select id="edit_division" wire:model="form.division_id" placeholder="{{ __('Select Division') }}"
+            <x-tom-select id="create_division" wire:model="form.division_id" placeholder="{{ __('Select Division') }}"
                 :options="App\Models\Division::all()->map(fn($d) => ['id' => $d->id, 'name' => $d->name])" />
           </div>
           @error('form.division_id')
@@ -348,7 +348,7 @@
           @enderror
         </div>
         <div class="mt-4">
-          <x-label for="form.job_title_id" value="{{ __('Job Title') }}" />
+          <x-label for="create_jobTitle" value="{{ __('Job Title') }}" />
           <div class="mt-1 block w-full">
             <x-tom-select id="create_jobTitle" wire:model="form.job_title_id" placeholder="{{ __('Select Job Title') }}"
                 :options="App\Models\JobTitle::all()->map(fn($j) => ['id' => $j->id, 'name' => $j->name])" />
@@ -358,7 +358,7 @@
           @enderror
         </div>
         <div class="mt-4">
-          <x-label for="form.education_id" value="{{ __('Last Education') }}" />
+          <x-label for="create_education" value="{{ __('Last Education') }}" />
           <div class="mt-1 block w-full">
             <x-tom-select id="create_education" wire:model="form.education_id" placeholder="{{ __('Select Education') }}"
                 :options="App\Models\Education::all()->map(fn($e) => ['id' => $e->id, 'name' => $e->name])" />
@@ -432,25 +432,25 @@
           </div>
         @endif
         <div class="mt-4">
-          <x-label for="name">Nama Karyawan</x-label>
-          <x-input id="name" class="mt-1 block w-full" type="text" wire:model="form.name" />
+          <x-label for="edit_name">Nama Karyawan</x-label>
+          <x-input id="edit_name" class="mt-1 block w-full" type="text" wire:model="form.name" autocomplete="off" />
           @error('form.name')
             <x-input-error for="form.name" class="mt-2" message="{{ $message }}" />
           @enderror
         </div>
         <div class="mt-4 flex flex-col gap-4 sm:flex-row sm:gap-3">
           <div class="w-full">
-            <x-label for="email">{{ __('Email') }}</x-label>
-            <x-input id="email" class="mt-1 block w-full" type="email" wire:model="form.email"
-              placeholder="example@example.com" required />
+            <x-label for="edit_email">{{ __('Email') }}</x-label>
+            <x-input id="edit_email" class="mt-1 block w-full" type="email" wire:model="form.email"
+              placeholder="example@example.com" required autocomplete="off" />
             @error('form.email')
               <x-input-error for="form.email" class="mt-2" message="{{ $message }}" />
             @enderror
           </div>
           <div class="w-full">
-            <x-label for="nip">NIP</x-label>
-            <x-input id="nip" class="mt-1 block w-full" type="text" wire:model="form.nip"
-              placeholder="12345678" required />
+            <x-label for="edit_nip">NIP</x-label>
+            <x-input id="edit_nip" class="mt-1 block w-full" type="text" wire:model="form.nip"
+              placeholder="12345678" required autocomplete="off" />
             @error('form.nip')
               <x-input-error for="form.nip" class="mt-2" message="{{ $message }}" />
             @enderror
@@ -458,9 +458,9 @@
         </div>
         <div class="mt-4 flex flex-col gap-4 sm:flex-row sm:gap-3">
           <div class="w-full">
-            <x-label for="password">{{ __('Password') }}</x-label>
-            <x-input id="password" class="mt-1 block w-full" type="password" wire:model="form.password"
-              placeholder="New Password" />
+            <x-label for="edit_password">{{ __('Password') }}</x-label>
+            <x-input id="edit_password" class="mt-1 block w-full" type="password" wire:model="form.password"
+              placeholder="New Password" autocomplete="new-password" />
             @error('form.password')
               <x-input-error for="form.password" class="mt-2" message="{{ $message }}" />
             @enderror
@@ -468,15 +468,15 @@
         </div>
         <div class="mt-4 flex flex-col gap-4 sm:flex-row sm:gap-3">
           <div class="w-full">
-            <x-label for="gender">{{ __('Gender') }}</x-label>
+            <x-label for="edit_gender">{{ __('Gender') }}</x-label>
             <div class="my-3 flex flex-row gap-5">
               <div class="flex items-center">
-                <input type="radio" id="gender-male" wire:model="form.gender" value="male" />
-                <x-label for="gender-male" class="ml-2">{{ __('Male') }}</x-label>
+                <input type="radio" id="edit_gender_male" wire:model="form.gender" value="male" />
+                <x-label for="edit_gender_male" class="ml-2">{{ __('Male') }}</x-label>
               </div>
               <div class="flex items-center">
-                <input type="radio" id="gender-female" wire:model="form.gender" value="female" />
-                <x-label for="gender-female" class="ml-2">{{ __('Female') }}</x-label>
+                <input type="radio" id="edit_gender_female" wire:model="form.gender" value="female" />
+                <x-label for="edit_gender_female" class="ml-2">{{ __('Female') }}</x-label>
               </div>
             </div>
             @error('form.gender')
@@ -484,9 +484,9 @@
             @enderror
           </div>
           <div class="w-full">
-            <x-label for="phone">{{ __('Phone') }}</x-label>
-            <x-input id="phone" class="mt-1 block w-full" type="text" wire:model="form.phone"
-              placeholder="+628123456789" />
+            <x-label for="edit_phone">{{ __('Phone') }}</x-label>
+            <x-input id="edit_phone" class="mt-1 block w-full" type="text" wire:model="form.phone"
+              placeholder="+628123456789" autocomplete="off" />
             @error('form.phone')
               <x-input-error for="form.phone" class="mt-2" message="{{ $message }}" />
             @enderror
@@ -494,16 +494,16 @@
         </div>
         <div class="mt-4 flex flex-col gap-4 sm:flex-row sm:gap-3">
           <div class="w-full">
-            <x-label for="birth_date">{{ __('Birth Date') }}</x-label>
-            <x-input id="birth_date" class="mt-1 block w-full" type="date" wire:model="form.birth_date" />
+            <x-label for="edit_birth_date">{{ __('Birth Date') }}</x-label>
+            <x-input id="edit_birth_date" class="mt-1 block w-full" type="date" wire:model="form.birth_date" autocomplete="off" />
             @error('form.birth_date')
               <x-input-error for="form.birth_date" class="mt-2" message="{{ $message }}" />
             @enderror
           </div>
           <div class="w-full">
-            <x-label for="birth_place">{{ __('Birth Place') }}</x-label>
-            <x-input id="birth_place" class="mt-1 block w-full" type="text" wire:model="form.birth_place"
-              placeholder="Jakarta" />
+            <x-label for="edit_birth_place">{{ __('Birth Place') }}</x-label>
+            <x-input id="edit_birth_place" class="mt-1 block w-full" type="text" wire:model="form.birth_place"
+              placeholder="Jakarta" autocomplete="off" />
             @error('form.birth_place')
               <x-input-error for="form.birth_place" class="mt-2" message="{{ $message }}" />
             @enderror
@@ -511,24 +511,24 @@
         </div>
         <div class="mt-4 flex flex-col gap-4 sm:flex-row sm:gap-3">
           <div class="w-full">
-            <x-label for="city">{{ __('City') }}</x-label>
-            <x-input id="city" class="mt-1 block w-full" type="text" wire:model="form.city"
-              placeholder="Domisili" />
+            <x-label for="edit_city">{{ __('City') }}</x-label>
+            <x-input id="edit_city" class="mt-1 block w-full" type="text" wire:model="form.city"
+              placeholder="Domisili" autocomplete="off" />
             @error('form.city')
               <x-input-error for="form.city" class="mt-2" message="{{ $message }}" />
             @enderror
           </div>
           <div class="w-full">
-            <x-label for="address">{{ __('Address') }}</x-label>
-            <x-input id="address" class="mt-1 block w-full" type="text" wire:model="form.address"
-              placeholder="Jl. Jend. Sudirman" />
+            <x-label for="edit_address">{{ __('Address') }}</x-label>
+            <x-input id="edit_address" class="mt-1 block w-full" type="text" wire:model="form.address"
+              placeholder="Jl. Jend. Sudirman" autocomplete="off" />
             @error('form.address')
               <x-input-error for="form.address" class="mt-2" message="{{ $message }}" />
             @enderror
           </div>
         </div>
         <div class="mt-4">
-          <x-label for="form.division_id" value="{{ __('Division') }}" />
+          <x-label for="edit_division" value="{{ __('Division') }}" />
           <div class="mt-1 block w-full">
             <x-tom-select id="edit_division" wire:model="form.division_id" placeholder="{{ __('Select Division') }}"
                 :options="App\Models\Division::all()->map(fn($d) => ['id' => $d->id, 'name' => $d->name])" />
@@ -538,7 +538,7 @@
           @enderror
         </div>
         <div class="mt-4">
-          <x-label for="form.job_title_id" value="{{ __('Job Title') }}" />
+          <x-label for="edit_jobTitle" value="{{ __('Job Title') }}" />
           <div class="mt-1 block w-full">
             <x-tom-select id="edit_jobTitle" wire:model="form.job_title_id" placeholder="{{ __('Select Job Title') }}"
                 :options="App\Models\JobTitle::all()->map(fn($j) => ['id' => $j->id, 'name' => $j->name])" />
@@ -548,7 +548,7 @@
           @enderror
         </div>
         <div class="mt-4">
-          <x-label for="form.education_id" value="{{ __('Last Education') }}" />
+          <x-label for="edit_education" value="{{ __('Last Education') }}" />
           <div class="mt-1 block w-full">
             <x-tom-select id="edit_education" wire:model="form.education_id" placeholder="{{ __('Select Education') }}"
                 :options="App\Models\Education::all()->map(fn($e) => ['id' => $e->id, 'name' => $e->name])" />

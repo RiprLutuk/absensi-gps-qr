@@ -106,6 +106,10 @@ Route::middleware([
             ->name('admin.activity-logs.export');
         Route::get('/reports/export-pdf', [ImportExportController::class, 'exportReportPdf'])
             ->name('admin.reports.export-pdf');
+
+        // Settings
+        Route::get('/settings', \App\Livewire\Admin\Settings::class)
+            ->name('admin.settings');
     });
 });
 

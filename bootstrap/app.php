@@ -18,8 +18,10 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
         $middleware->web(append: [
             \App\Http\Middleware\LogUserActivity::class,
+            \App\Http\Middleware\EnsureSecurityHeaders::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
-    })->create();
+    })
+    ->create();

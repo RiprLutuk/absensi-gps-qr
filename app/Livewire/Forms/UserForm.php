@@ -90,6 +90,8 @@ class UserForm extends Form
             return abort(403);
         }
         $this->validate();
+        $this->sanitize();
+
         /** @var User $user */
         $user = User::create([
             ...$this->all(),
@@ -105,6 +107,8 @@ class UserForm extends Form
             return abort(403);
         }
         $this->validate();
+        $this->sanitize();
+
         $this->user->update([
             ...$this->all(),
             'password' => $this->password ? Hash::make($this->password) : $this->user?->password,
@@ -112,6 +116,14 @@ class UserForm extends Form
         ]);
         if (isset($this->photo)) $this->user->updateProfilePhoto($this->photo);
         $this->reset();
+    }
+
+    protected function sanitize()
+    {
+        $this->division_id = $this->division_id ?: null;
+        $this->job_title_id = $this->job_title_id ?: null;
+        $this->education_id = $this->education_id ?: null;
+        $this->birth_date = $this->birth_date ?: null;
     }
 
     public function deleteProfilePhoto()

@@ -124,17 +124,9 @@
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='%239ca3af' class='w-6 h-6'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9' /%3E%3C/svg%3E");
     }
 
-    /* Hide arrow when loading */
-    .ts-wrapper.loading::after {
-        display: none;
-    }
-
-    /* Adjust clear button position */
-    .ts-control .item {
-        background: transparent !important;
-        border: none !important;
-        color: inherit !important;
-        padding: 0 !important;
+    /* High Z-Index for Dropdown */
+    .ts-dropdown {
+        z-index: 99999 !important;
     }
 </style>
 @endonce
@@ -143,6 +135,8 @@
      x-data="{
          tomSelectInstance: null,
          options: @js($options),
+         value: @entangle($attributes->wire('model')),
+         
          initTomSelect() {
              if (this.tomSelectInstance) {
                  this.tomSelectInstance.sync();
@@ -160,21 +154,23 @@
                  options: this.options,
                  placeholder: '{{ $placeholder }}',
                  onChange: (value) => {
-                     @if($attributes->wire('model')->value())
-                         $wire.set('{{ $attributes->wire('model')->value() }}', value);
-                     @endif
+                     this.value = value;
                  }
              });
 
-             // Sync initial value
-             let initialValue = @js($selected);
-             
-             @if($attributes->wire('model')->value())
-                 initialValue = $wire.get('{{ $attributes->wire('model')->value() }}');
-             @endif
+             // Sync Livewire -> TomSelect
+             this.$watch('value', (newValue) => {
+                 if (!this.tomSelectInstance) return;
+                 const currentValue = this.tomSelectInstance.getValue();
+                 // Only update if different to avoid loops
+                 if (newValue != currentValue) {
+                     this.tomSelectInstance.setValue(newValue, true); // true = silent
+                 }
+             });
 
-             if (initialValue) {
-                this.tomSelectInstance.setValue(initialValue, true);
+             // Initial Value
+             if (this.value) {
+                 this.tomSelectInstance.setValue(this.value, true);
              }
          }
      }"

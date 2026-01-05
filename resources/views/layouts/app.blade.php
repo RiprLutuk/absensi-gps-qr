@@ -59,6 +59,26 @@
 
     @livewireScripts
 
+    {{-- Global Notification --}}
+    <div x-data="{ show: false, message: '' }"
+         x-on:saved.window="show = true; message = $event.detail?.message || 'Saved successfully'; setTimeout(() => show = false, 2000)"
+         class="fixed bottom-6 right-6 z-[9999]"
+         style="display: none;" 
+         x-show="show"
+         x-transition:enter="transform ease-out duration-300 transition"
+         x-transition:enter-start="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2"
+         x-transition:enter-end="translate-y-0 opacity-100 sm:translate-x-0"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0">
+        <div class="flex items-center gap-3 rounded-lg bg-green-500 px-4 py-3 text-white shadow-lg">
+            <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+            <span class="font-medium" x-text="message"></span>
+        </div>
+    </div>
+
     @stack('scripts')
 </body>
 
