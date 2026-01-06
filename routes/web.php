@@ -115,6 +115,9 @@ Route::middleware([
 
         Route::get('/leaves', \App\Livewire\Admin\LeaveApproval::class)
             ->name('admin.leaves');
+        
+        Route::get('/analytics', \App\Livewire\Admin\AnalyticsDashboard::class)
+            ->name('admin.analytics');
     });
 });
 

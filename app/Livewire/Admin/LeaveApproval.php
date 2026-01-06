@@ -7,6 +7,8 @@ use App\Models\Attendance;
 use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;
 use Livewire\Attributes\Layout;
+use App\Notifications\LeaveStatusUpdated;
+use Illuminate\Support\Facades\Notification;
 
 #[Layout('layouts.app')]
 class LeaveApproval extends Component
@@ -39,7 +41,9 @@ class LeaveApproval extends Component
         ]);
 
         $this->dispatch('saved'); 
-        // In the future: Notify user
+        
+        // Notify user
+        $attendance->user->notify(new LeaveStatusUpdated($attendance));
     }
 
     public function confirmReject($id)
@@ -61,6 +65,8 @@ class LeaveApproval extends Component
         $this->confirmingRejection = false;
         $this->rejectionNote = '';
         $this->dispatch('saved');
-        // In the future: Notify user
+        
+        // Notify user
+        $attendance->user->notify(new LeaveStatusUpdated($attendance));
     }
 }

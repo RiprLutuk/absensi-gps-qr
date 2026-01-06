@@ -36,13 +36,13 @@
     <div class="min-h-screen bg-gray-100 dark:bg-gray-900 pt-[calc(4rem+env(safe-area-inset-top))] pb-[env(safe-area-inset-bottom)]">
         @livewire('navigation-menu')
 
-        @if (isset($header))
+        <!-- @if (isset($header))
             <header class="bg-white shadow dark:bg-gray-800">
                 <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
                     {{ $header }}
                 </div>
             </header>
-        @endif
+        @endif -->
 
         <!-- Page Content -->
         <main>
@@ -80,6 +80,46 @@
     </div>
 
     @stack('scripts')
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            @if(session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: "{{ session('success') }}",
+                    confirmButtonColor: '#3085d6',
+                });
+            @endif
+
+            @if(session('error'))
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal',
+                    text: "{{ session('error') }}",
+                    confirmButtonColor: '#d33',
+                });
+            @endif
+
+            @if(session('warning'))
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Peringatan',
+                    text: "{{ session('warning') }}",
+                    confirmButtonColor: '#f8bb86',
+                });
+            @endif
+
+            @if(session('info'))
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Informasi',
+                    text: "{{ session('info') }}",
+                    confirmButtonColor: '#3085d6',
+                });
+            @endif
+        });
+    </script>
 </body>
 
 </html>

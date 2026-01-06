@@ -29,6 +29,10 @@
                             :active="request()->routeIs('admin.leaves')" wire:navigate>
                             {{ __('Approvals') }}
                         </x-nav-link>
+                        <x-nav-link class="hidden md:inline-flex" href="{{ route('admin.analytics') }}"
+                            :active="request()->routeIs('admin.analytics')" wire:navigate>
+                            {{ __('Analytics') }}
+                        </x-nav-link>
                         <x-nav-link class="hidden md:inline-flex" href="{{ route('admin.employees') }}"
                             :active="request()->routeIs('admin.employees')" wire:navigate>
                             {{ __('Employee') }}
@@ -97,6 +101,10 @@
 
             <div class="flex gap-2">
                 <div class="hidden sm:ms-6 sm:flex sm:items-center">
+                    <div class="flex items-center">
+                        <livewire:notifications-dropdown />
+                    </div>
+                    
                     <x-theme-toggle id="theme-switcher-desktop" />
 
                     <!-- Settings Dropdown -->
@@ -158,6 +166,10 @@
                     </div>
                 </div>
 
+                <div class="flex items-center sm:hidden">
+                    <livewire:notifications-dropdown />
+                </div>
+
                 <x-theme-toggle id="theme-switcher-mobile" class="sm:hidden" />
 
                 <!-- Hamburger -->
@@ -179,7 +191,7 @@
     </div>
 
     <!-- Responsive Navigation Menu -->
-    <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
+    <div :class="{ 'block': open, 'hidden': !open }" class="sm:hidden">
         <div class="space-y-1 pb-3 pt-2">
             @if (Auth::user()->isAdmin)
                 <x-responsive-nav-link href="{{ route('admin.dashboard') }}" :active="request()->routeIs('admin.dashboard')" wire:navigate>

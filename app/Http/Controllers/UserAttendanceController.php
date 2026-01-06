@@ -50,8 +50,23 @@ class UserAttendanceController extends Controller
 
                 return redirect()->back()
                     ->withInput()
-                    ->with('flash.banner', "Tidak dapat mengajukan izin. Anda sudah melakukan absensi (clock in/out) pada tanggal: {$blockedDates}")
-                    ->with('flash.bannerStyle', 'danger');
+                    ->with('error', "Tidak dapat mengajukan izin. Anda sudah melakukan absensi (clock in/out) pada tanggal: {$blockedDates}");
+            }
+
+            // Check if user has already pending or approved leave requests on any of the requested dates
+            $existingLeaveRequests = Attendance::where('user_id', Auth::user()->id)
+                ->whereBetween('date', [$fromDate->format('Y-m-d'), $toDate->format('Y-m-d')])
+                ->whereIn('approval_status', [Attendance::STATUS_PENDING, Attendance::STATUS_APPROVED])
+                ->get();
+
+            if ($existingLeaveRequests->isNotEmpty()) {
+                $blockedDates = $existingLeaveRequests->pluck('date')
+                    ->map(fn($date) => Carbon::parse($date)->format('d M Y'))
+                    ->join(', ');
+
+                return redirect()->back()
+                    ->withInput()
+                    ->with('error', "Tidak dapat mengajukan izin. Anda sudah memiliki pengajuan izin (Pending/Disetujui) pada tanggal: {$blockedDates}");
             }
 
             // Save new attachment file
@@ -103,13 +118,18 @@ class UserAttendanceController extends Controller
 
             \App\Models\ActivityLog::record('Leave Request', "User submitted {$request->status} request from {$fromDate->format('Y-m-d')} to {$toDate->format('Y-m-d')}");
 
+            // Notify Admins
+            $admins = \App\Models\User::whereIn('group', ['admin', 'superadmin'])->get();
+            if (class_exists(\Illuminate\Support\Facades\Notification::class)) {
+                \Illuminate\Support\Facades\Notification::send($admins, new \App\Notifications\LeaveRequested($attendance ?? \App\Models\Attendance::where('user_id', Auth::id())->latest()->first()));
+            }
+
             return redirect(route('home'))
-                ->with('flash.banner', __('Pengajuan izin berhasil dibuat.'));
+                ->with('success', __('Pengajuan izin berhasil dibuat.'));
         } catch (\Throwable $th) {
             return redirect()->back()
                 ->withInput()
-                ->with('flash.banner', 'Terjadi kesalahan: ' . $th->getMessage())
-                ->with('flash.bannerStyle', 'danger');
+                ->with('error', 'Terjadi kesalahan: ' . $th->getMessage());
         }
     }
 

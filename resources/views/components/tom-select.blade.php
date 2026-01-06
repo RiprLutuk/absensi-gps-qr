@@ -132,9 +132,11 @@
 @endonce
 
 <script>
-    document.addEventListener('alpine:init', () => {
-        if (!Alpine.data('tomSelect')) {
-            Alpine.data('tomSelect', (options, placeholder, wireModel) => ({
+    (function() {
+        const initTomSelect = () => {
+             if (Alpine.data('tomSelect')) return;
+             
+             Alpine.data('tomSelect', (options, placeholder, wireModel) => ({
                 tomSelectInstance: null,
                 options: options,
                 value: wireModel,
@@ -145,7 +147,7 @@
                         return;
                     }
                     
-                    this.tomSelectInstance = new TomSelect(this.$refs.select, {
+                    const config = {
                         create: false,
                         sortField: {
                             field: '$order'
@@ -153,20 +155,25 @@
                         valueField: 'id',
                         labelField: 'name',
                         searchField: 'name',
-                        options: this.options,
                         placeholder: placeholder,
                         onChange: (value) => {
                             this.value = value;
                         }
-                    });
+                    };
+
+                    // Only add options if provided via prop (JSON mode)
+                    if (this.options && this.options.length > 0) {
+                        config.options = this.options;
+                    }
+
+                    this.tomSelectInstance = new TomSelect(this.$refs.select, config);
 
                     // Sync Livewire -> TomSelect
                     this.$watch('value', (newValue) => {
                         if (!this.tomSelectInstance) return;
                         const currentValue = this.tomSelectInstance.getValue();
-                        // Only update if different to avoid loops
                         if (newValue != currentValue) {
-                            this.tomSelectInstance.setValue(newValue, true); // true = silent
+                            this.tomSelectInstance.setValue(newValue, true); 
                         }
                     });
 
@@ -183,8 +190,14 @@
                     }
                 }
             }));
+        };
+
+        if (typeof Alpine !== 'undefined') {
+            initTomSelect();
+        } else {
+            document.addEventListener('alpine:init', initTomSelect);
         }
-    });
+    })();
 </script>
 
 <div wire:ignore

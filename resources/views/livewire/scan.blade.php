@@ -6,7 +6,6 @@
         $isComplete = $hasCheckedIn && $hasCheckedOut;
         $requirePhoto = \App\Models\Setting::getValue('feature.require_photo', 1);
     @endphp
-    @endphp
 
     @pushOnce('styles')
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
