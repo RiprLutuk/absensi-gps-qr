@@ -17,7 +17,7 @@
         </div>
         @if (isset($status))
             <span class="px-2 py-1 {{ $statusClass }} text-xs font-semibold rounded-lg">
-                {{ $status == 'late' ? 'Late' : 'On Time' }}
+                {{ $status == 'late' ? __('Late') : __('On Time') }}
             </span>
         @endif
     </div>

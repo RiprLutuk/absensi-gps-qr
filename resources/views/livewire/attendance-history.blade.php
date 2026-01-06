@@ -10,10 +10,10 @@
         <div class="p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                    Riwayat Absensi
+                    {{ __('Attendance History') }}
                 </h3>
                 <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                    Klik tanggal untuk melihat detail.
+                    {{ __('Click date to view details.') }}
                 </p>
             </div>
             
@@ -33,7 +33,7 @@
         <div class="p-4 sm:p-6">
             {{-- Days Header --}}
             <div class="grid grid-cols-7 mb-2">
-                @foreach (['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'] as $index => $day)
+                @foreach ([__('Sun'), __('Mon'), __('Tue'), __('Wed'), __('Thu'), __('Fri'), __('Sat')] as $index => $day)
                     <div class="text-center text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 py-2 {{ $index === 0 ? 'text-red-500' : ($index === 5 ? 'text-green-600 dark:text-green-500' : '') }}">
                         {{ $day }}
                     </div>
@@ -110,13 +110,13 @@
         <div class="p-4 sm:p-6 bg-gray-50 dark:bg-gray-700/20 border-t border-gray-200 dark:border-gray-700 rounded-b-lg">
             <div class="flex flex-wrap justify-center gap-3 sm:gap-6">
                  @foreach([
-                    'present' => ['label' => 'Hadir', 'color' => 'bg-green-500', 'text' => 'text-green-700 dark:text-green-400'],
-                    'late' => ['label' => 'Terlambat', 'color' => 'bg-amber-500', 'text' => 'text-amber-700 dark:text-amber-400'],
-                    'excused' => ['label' => 'Izin', 'color' => 'bg-blue-500', 'text' => 'text-blue-700 dark:text-blue-400'],
-                    'sick' => ['label' => 'Sakit', 'color' => 'bg-purple-500', 'text' => 'text-purple-700 dark:text-purple-400'],
-                    'absent' => ['label' => 'Absen', 'color' => 'bg-red-500', 'text' => 'text-red-700 dark:text-red-400'],
-                    'pending' => ['label' => 'Menunggu', 'color' => 'bg-yellow-400', 'text' => 'text-yellow-700 dark:text-yellow-400'],
-                    'rejected' => ['label' => 'Ditolak', 'color' => 'bg-red-600', 'text' => 'text-red-700 dark:text-red-400']
+                    'present' => ['label' => __('Present'), 'color' => 'bg-green-500', 'text' => 'text-green-700 dark:text-green-400'],
+                    'late' => ['label' => __('Late'), 'color' => 'bg-amber-500', 'text' => 'text-amber-700 dark:text-amber-400'],
+                    'excused' => ['label' => __('Excused'), 'color' => 'bg-blue-500', 'text' => 'text-blue-700 dark:text-blue-400'],
+                    'sick' => ['label' => __('Sick'), 'color' => 'bg-purple-500', 'text' => 'text-purple-700 dark:text-purple-400'],
+                    'absent' => ['label' => __('Absent'), 'color' => 'bg-red-500', 'text' => 'text-red-700 dark:text-red-400'],
+                    'pending' => ['label' => __('Pending'), 'color' => 'bg-yellow-400', 'text' => 'text-yellow-700 dark:text-yellow-400'],
+                    'rejected' => ['label' => __('Rejected'), 'color' => 'bg-red-600', 'text' => 'text-red-700 dark:text-red-400']
                 ] as $key => $meta)
                     @if(in_array($key, ['pending', 'rejected']) || isset($counts[$key]))
                     <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white dark:bg-gray-800 shadow-sm border border-gray-100 dark:border-gray-700">

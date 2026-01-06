@@ -231,10 +231,10 @@
                     {{ __('App Settings') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link href="{{ route('admin.import-export.users') }}" :active="request()->routeIs('admin.import-export')" wire:navigate>
-                    Import & Export Karyawan/Admin
+                    {{ __('Import & Export') }} {{ __('Employee') }}/{{ __('Admin') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link href="{{ route('admin.import-export.attendances') }}" :active="request()->routeIs('admin.import-export')" wire:navigate>
-                    Import & Export Absensi
+                    {{ __('Import & Export') }} {{ __('Attendance') }}
                 </x-responsive-nav-link>
             @else
                 <x-responsive-nav-link href="{{ route('home') }}" :active="request()->routeIs('home')" wire:navigate>

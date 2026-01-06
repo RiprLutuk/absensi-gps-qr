@@ -13,10 +13,10 @@
             @if (session()->has('flash.banner'))
                 Swal.fire({
                     icon: 'success',
-                    title: 'Berhasil!',
+                    title: "{{ __('Success!') }}",
                     text: "{{ session('flash.banner') }}",
                     confirmButtonColor: '#3085d6',
-                    confirmButtonText: 'OK'
+                    confirmButtonText: "{{ __('OK') }}"
                 });
             @endif
         });

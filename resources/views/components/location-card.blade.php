@@ -12,7 +12,7 @@
 
         <div class="flex items-center gap-2 ml-auto">
             @if ($showRefresh ?? false)
-                <button onclick="refreshLocation()" id="refresh-location-btn" title="Refresh Location"
+                <button onclick="refreshLocation()" id="refresh-location-btn" title="{{ __('Refresh Location') }}"
                     class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
                     <svg class="w-4 h-4 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
@@ -27,7 +27,7 @@
                     viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                 </svg>
-                <span>Show Map</span>
+                <span>{{ __('Show Map') }}</span>
             </button>
         </div>
     </div>
@@ -47,9 +47,9 @@
         @else
             <span class="text-xs text-gray-500 dark:text-gray-400">
                 @if (isset($showRefresh) && $showRefresh)
-                    Detecting location...
+                    {{ __('Detecting location...') }}
                 @else
-                    No location data
+                    {{ __('No location data') }}
                 @endif
             </span>
         @endif

@@ -49,12 +49,12 @@
                                 viewBox="0 0 24 24">
                                 <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
                             </svg>
-                            <span class="text-sm font-semibold text-green-600 dark:text-green-400">Complete</span>
+                            <span class="text-sm font-semibold text-green-600 dark:text-green-400">{{ __('Complete') }}</span>
                         </div>
                     @else
                         <div class="hidden md:flex items-center gap-2">
                             <span class="pulse-dot w-3 h-3 bg-green-500 rounded-full"></span>
-                            <span class="text-sm text-gray-600 dark:text-gray-300">Live</span>
+                            <span class="text-sm text-gray-600 dark:text-gray-300">{{ __('Live') }}</span>
                         </div>
                     @endif
                 </div>
@@ -75,9 +75,8 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
                         </svg>
                     </div>
-                    <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Attendance Complete!</h2>
-                    <p class="text-sm text-gray-600 dark:text-gray-300">You've successfully completed today's
-                        attendance</p>
+                    <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-2">{{ __('Attendance Complete!') }}</h2>
+                    <p class="text-sm text-gray-600 dark:text-gray-300">{{ __('You\'ve successfully completed today\'s attendance') }}</p>
                 </div>
 
                 {{-- Summary Cards --}}
@@ -86,7 +85,7 @@
                         'icon' =>
                             'M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1',
                         'bgColor' => 'blue',
-                        'label' => 'Check In',
+                        'label' => __('Check In'),
                         'time' => \App\Helpers::format_time($attendance->time_in),
                         'status' => $attendance->status,
                     ])
@@ -95,7 +94,7 @@
                         'icon' =>
                             'M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1',
                         'bgColor' => 'orange',
-                        'label' => 'Check Out',
+                        'label' => __('Check Out'),
                         'time' => \App\Helpers::format_time($attendance->time_out),
                     ])
                 </div>
@@ -104,7 +103,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                     {{-- Check In Location --}}
                     @include('components.location-card', [
-                        'title' => 'Check In Location',
+                        'title' => __('Check In Location'),
                         'mapId' => 'checkInMap',
                         'latitude' => $attendance?->latitude_in,
                         'longitude' => $attendance?->longitude_in,
@@ -115,7 +114,7 @@
 
                     {{-- Check Out Location --}}
                     @include('components.location-card', [
-                        'title' => 'Check Out Location',
+                        'title' => __('Check Out Location'),
                         'mapId' => 'checkOutMap',
                         'latitude' => $attendance?->latitude_out,
                         'longitude' => $attendance?->longitude_out,
@@ -142,8 +141,8 @@
                             </svg>
                         </div>
                         <div>
-                            <h3 class="text-xl font-bold text-gray-900 dark:text-white">You're Checked In!</h3>
-                            <p class="text-sm text-gray-600 dark:text-gray-300">Scan QR to check out</p>
+                            <h3 class="text-xl font-bold text-gray-900 dark:text-white">{{ __('You\'re Checked In!') }}</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-300">{{ __('Scan QR to check out') }}</p>
                         </div>
                     </div>
                 </div>
@@ -154,19 +153,19 @@
                             @include('components.shift-selector')
                             
                             <div id="scanner-card-container">
-                                @include('components.scanner-card', ['title' => 'Scan to Check Out'])
+                                @include('components.scanner-card', ['title' => __('Scan to Check Out')])
                             </div>
                             
                             {{-- Selfie UI (Hidden by default) --}}
                             <div id="selfie-card-container" class="hidden rounded-lg border border-gray-200 bg-white p-4 sm:p-6 shadow dark:border-gray-700 dark:bg-gray-800">
-                                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 text-center">Take a Selfie</h3>
+                                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 text-center">{{ __('Take a Selfie') }}</h3>
                                 <div class="relative w-full aspect-square bg-gray-900 rounded-xl overflow-hidden mb-4">
                                     <video id="selfie-video" autoplay playsinline class="w-full h-full object-cover transform -scale-x-100"></video>
                                     <div class="absolute inset-0 border-[3px] border-white/50 rounded-[50%] m-8 pointer-events-none"></div> {{-- Face Guide --}}
                                 </div>
                                 <button onclick="window.captureAndSubmit()" class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg shadow-lg flex items-center justify-center gap-2">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                                    Capture & Check Out
+                                    {{ __('Capture & Check Out') }}
                                 </button>
                             </div>
                         </div>
@@ -186,7 +185,7 @@
 
                         {{-- Check In Location History --}}
                         @include('components.location-card', [
-                            'title' => 'Check In Location',
+                            'title' => __('Check In Location'),
                             'mapId' => 'checkInMap',
                             'latitude' => $attendance?->latitude_in,
                             'longitude' => $attendance?->longitude_in,
@@ -197,7 +196,7 @@
 
                         {{-- Current Location for Check Out --}}
                         @include('components.location-card', [
-                            'title' => 'Current Location',
+                            'title' => __('Current Location'),
                             'mapId' => 'currentLocationMap',
                             'latitude' => $currentLiveCoords[0] ?? null,
                             'longitude' => $currentLiveCoords[1] ?? null,
@@ -219,19 +218,19 @@
                         @include('components.shift-selector')
                         
                         <div id="scanner-card-container">
-                             @include('components.scanner-card', ['title' => 'Scan QR Code'])
+                             @include('components.scanner-card', ['title' => __('Scan QR Code')])
                         </div>
 
                          {{-- Selfie UI (Hidden by default) --}}
                          <div id="selfie-card-container" class="hidden rounded-lg border border-gray-200 bg-white p-4 sm:p-6 shadow dark:border-gray-700 dark:bg-gray-800">
-                             <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 text-center">Take a Selfie</h3>
+                             <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 text-center">{{ __('Take a Selfie') }}</h3>
                              <div class="relative w-full aspect-square bg-gray-900 rounded-xl overflow-hidden mb-4">
                                  <video id="selfie-video" autoplay playsinline class="w-full h-full object-cover transform -scale-x-100"></video>
                                  <div class="absolute inset-0 border-[3px] border-white/50 rounded-[50%] m-8 pointer-events-none"></div> {{-- Face Guide --}}
                              </div>
                              <button onclick="window.captureAndSubmit()" class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg shadow-lg flex items-center justify-center gap-2">
                                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                                 Capture & Check In
+                                 {{ __('Capture & Check In') }}
                              </button>
                          </div>
                     </div>
@@ -239,7 +238,7 @@
 
                 <div class="flex-1 space-y-4 sm:space-y-6">
                     @include('components.location-card', [
-                        'title' => 'Current Location',
+                        'title' => __('Current Location'),
                         'mapId' => 'currentLocationMap',
                         'latitude' => $currentLiveCoords[0] ?? null,
                         'longitude' => $currentLiveCoords[1] ?? null,
@@ -254,7 +253,7 @@
                             'icon' =>
                                 'M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1',
                             'bgColor' => 'blue',
-                            'label' => 'Check In',
+                            'label' => __('Check In'),
                             'time' => '--:--:--',
                             'compact' => true,
                         ])
@@ -263,7 +262,7 @@
                             'icon' =>
                                 'M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1',
                             'bgColor' => 'amber',
-                            'label' => 'Check Out',
+                            'label' => __('Check Out'),
                             'time' => '--:--:--',
                             'compact' => true,
                         ])
@@ -310,7 +309,7 @@
             if (mapEl.classList.contains('hidden')) {
                 mapEl.classList.remove('hidden');
                 svg.style.transform = 'rotate(180deg)';
-                span.textContent = 'Hide Map';
+                span.textContent = '{{ __('Hide Map') }}';
 
                 if (!state.maps[mapId]) {
                     initMap(mapId);
@@ -325,7 +324,7 @@
             } else {
                 mapEl.classList.add('hidden');
                 svg.style.transform = 'rotate(0deg)';
-                span.textContent = 'Show Map';
+                span.textContent = '{{ __('Show Map') }}';
             }
         };
 
@@ -336,17 +335,17 @@
             if (mapId === 'checkInMap') {
                 lat = {{ $attendance?->latitude_in ?? 0 }};
                 lng = {{ $attendance?->longitude_in ?? 0 }};
-                popupText = 'Check In Location';
+                popupText = '{{ __('Check In Location') }}';
                 markerColor = 'blue';
             } else if (mapId === 'checkOutMap') {
                 lat = {{ $attendance?->latitude_out ?? 0 }};
                 lng = {{ $attendance?->longitude_out ?? 0 }};
-                popupText = 'Check Out Location';
+                popupText = '{{ __('Check Out Location') }}';
                 markerColor = 'orange';
             } else {
                 lat = state.userLat;
                 lng = state.userLng;
-                popupText = 'Your Current Location';
+                popupText = '{{ __('Your Current Location') }}';
                 markerColor = 'green';
             }
 
@@ -467,7 +466,7 @@
                     const timeStr = new Date().toLocaleTimeString();
                     L.marker([state.userLat, state.userLng])
                         .addTo(state.maps['currentLocationMap'])
-                        .bindPopup(`Your Current Location<br><span class="text-xs text-gray-500">Updated: ${timeStr}</span>`)
+                        .bindPopup(`{{ __('Your Current Location') }}<br><span class="text-xs text-gray-500">{{ __('Updated:') }} ${timeStr}</span>`)
                         .openPopup();
                 }
 
@@ -479,12 +478,12 @@
                 const locationText = document.getElementById('location-text-currentLocationMap');
                 if (locationText) {
                     locationText.innerHTML =
-                        '<span class="text-red-600 dark:text-red-400">Location access denied</span>';
+                        '<span class="text-red-600 dark:text-red-400">{{ __('Location access denied') }}</span>';
                 }
 
                 if (state.errorMsg) {
                     state.errorMsg.classList.remove('hidden');
-                    state.errorMsg.innerHTML = 'Please enable location access';
+                    state.errorMsg.innerHTML = '{{ __('Please enable location access') }}';
                 }
 
                 throw err;
@@ -648,7 +647,7 @@
                     video.srcObject = stream;
                 } catch (err) {
                     console.error('Selfie camera error', err);
-                    Swal.fire('Error', 'Could not access selfie camera', 'error');
+                    Swal.fire("{{ __('Error') }}", "{{ __('Could not access selfie camera') }}", 'error');
                 }
             }
             
@@ -703,24 +702,24 @@
                         if (now < shiftEnd) {
                             const formattedTime = formatTime(attendanceData.shift_end_time);
                             const result = await Swal.fire({
-                                title: 'Pulang Lebih Awal?',
-                                text: "Sekarang belum waktunya pas pulang (" + formattedTime + "). Mohon berikan alasan:",
+                                title: "{{ __('Early Leave?') }}",
+                                text: "{{ __('It is not yet time to leave') }} (" + formattedTime + "). {{ __('Please provide a reason:') }}",
                                 icon: 'warning',
                                 input: 'textarea',
-                                inputPlaceholder: 'Tulis alasan Anda di sini...',
+                                inputPlaceholder: "{{ __('Write your reason here...') }}",
                                 inputAttributes: {
-                                    'aria-label': 'Tulis alasan Anda di sini'
+                                    'aria-label': "{{ __('Write your reason here') }}"
                                 },
                                 showCancelButton: true,
                                 confirmButtonColor: '#d33',
                                 cancelButtonColor: '#3085d6',
-                                confirmButtonText: 'Simpan & Check Out',
-                                cancelButtonText: 'Batal',
+                                confirmButtonText: "{{ __('Save & Check Out') }}",
+                                cancelButtonText: "{{ __('Cancel') }}",
                                 allowOutsideClick: false,
                                 allowEscapeKey: false,
                                 inputValidator: (value) => {
                                     if (!value) {
-                                      return 'Alasan wajib diisi!'
+                                      return "{{ __('Reason is required!') }}"
                                     }
                                 }
                             });
@@ -786,8 +785,8 @@
                     
                     Swal.fire({
                         icon: 'success',
-                        title: 'Success!',
-                        text: 'Attendance recorded successfully',
+                        title: "{{ __('Success!') }}",
+                        text: "{{ __('Attendance recorded successfully') }}",
                         imageUrl: state.lastPhoto,
                         imageHeight: 200,
                         imageAlt: 'Captured Selfie',

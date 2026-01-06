@@ -10,7 +10,7 @@
             @endphp
 
             <h3 class="mb-4 text-xl font-semibold text-gray-900 dark:text-white">
-                Detail Absensi - {{ $currentAttendance['name'] ?? 'N/A' }}
+                {{ __('Attendance Detail') }} - {{ $currentAttendance['name'] ?? 'N/A' }}
             </h3>
 
             <div class="space-y-4">
@@ -39,9 +39,9 @@
                                 default => 'bg-gray-100 text-gray-800'
                             };
                             $statusLabel = match($approvalStatus) {
-                                'pending' => 'Menunggu Persetujuan',
-                                'approved' => 'Disetujui',
-                                'rejected' => 'Ditolak',
+                                'pending' => __('Pending Approval'),
+                                'approved' => __('Approved'),
+                                'rejected' => __('Rejected'),
                                 default => ucfirst($approvalStatus)
                             };
                         @endphp
@@ -52,7 +52,7 @@
 
                     @if(($currentAttendance['approval_status'] ?? '') === 'rejected' && !empty($currentAttendance['rejection_note']))
                     <div class="md:col-span-2">
-                         <x-label value="{{ __('Alasan Penolakan') }}"></x-label>
+                         <x-label value="{{ __('Rejection Reason') }}"></x-label>
                          <div class="mt-1 px-3 py-2 rounded-md bg-red-50 text-red-700 border border-red-200">
                             {{ $currentAttendance['rejection_note'] }}
                          </div>
@@ -111,7 +111,7 @@
                 {{-- Note --}}
                 @if (!empty($currentAttendance['note']))
                     <div class="py-2">
-                        <x-label for="note" value="Keterangan" />
+                        <x-label for="note" value="{{ __('Note') }}" />
                         <x-textarea id="note" class="w-full"
                             disabled>{{ $currentAttendance['note'] }}</x-textarea>
                     </div>
@@ -121,12 +121,12 @@
                 @if (!empty($currentAttendance['time_in']) || !empty($currentAttendance['time_out']))
                     <div class="grid grid-cols-2 gap-4 py-2">
                         <div>
-                            <x-label for="time_in" value="Waktu Masuk"></x-label>
+                            <x-label for="time_in" value="{{ __('Time In') }}"></x-label>
                             <x-input type="text" id="time_in" class="w-full" disabled
                                 value="{{ \App\Helpers::format_time($currentAttendance['time_in']) }}"></x-input>
                         </div>
                         <div>
-                            <x-label for="time_out" value="Waktu Keluar"></x-label>
+                            <x-label for="time_out" value="{{ __('Time Out') }}"></x-label>
                             <x-input type="text" id="time_out" class="w-full" disabled
                                 value="{{ \App\Helpers::format_time($currentAttendance['time_out']) }}"></x-input>
                         </div>
@@ -136,7 +136,7 @@
                 {{-- Location Maps --}}
                 @if ($showMaps)
                     <div class="mt-6">
-                        <h4 class="mb-4 text-sm font-semibold text-gray-900 dark:text-white">Lokasi Absensi</h4>
+                        <h4 class="mb-4 text-sm font-semibold text-gray-900 dark:text-white">{{ __('Attendance Location') }}</h4>
 
                         <div class="grid grid-cols-1 {{ $hasCheckIn && $hasCheckOut ? 'md:grid-cols-2' : '' }} gap-4">
                             {{-- Check In Location --}}
@@ -194,9 +194,9 @@
                                 class="mt-4 p-3 from-blue-50 to-orange-50 dark:from-blue-900 dark:to-orange-900 rounded-lg border border-gray-200 dark:border-gray-700">
                                 <div class="flex items-center justify-between">
                                     <span class="font-semibold text-sm text-gray-700 dark:text-gray-300">
-                                        🗺️ Jarak Check In - Check Out:
+                                        🗺️ {{ __('Distance Check In - Check Out') }}:
                                     </span>
-                                    <span id="distance-info" class="font-bold text-sm">Menghitung...</span>
+                                    <span id="distance-info" class="font-bold text-sm">{{ __('Calculating...') }}</span>
                                 </div>
                             </div>
                         @endif
@@ -209,14 +209,14 @@
                         class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                         @if (!empty($currentAttendance['shift']))
                             <div>
-                                <x-label for="shift" value="Shift"></x-label>
+                                <x-label for="shift" value="{{ __('Shift') }}"></x-label>
                                 <x-input class="w-full" type="text" id="shift" disabled
                                     value="{{ $currentAttendance['shift']['name'] ?? '-' }}"></x-input>
                             </div>
                         @endif
                         @if (!empty($currentAttendance['barcode']))
                             <div>
-                                <x-label for="barcode" value="Barcode"></x-label>
+                                <x-label for="barcode" value="{{ __('Barcode') }}"></x-label>
                                 <x-input class="w-full" type="text" id="barcode" disabled
                                     value="{{ $currentAttendance['barcode']['name'] ?? '-' }}"></x-input>
                             </div>
@@ -228,7 +228,7 @@
             {{-- Close Button --}}
             <div class="mt-6 flex justify-end">
                 <x-secondary-button wire:click="$set('showDetail', false)" class="!px-3 !py-1.5">
-                    Tutup
+                    {{ __('Close') }}
                 </x-secondary-button>
             </div>
         @endif
@@ -278,7 +278,7 @@
                             icon: blueIcon
                         })
                         .addTo(attendanceMaps.in)
-                        .bindPopup('<b>📍 Check In Location</b>');
+                        .bindPopup('<b>📍 {{ __('Check In Location') }}</b>');
 
                     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                         maxZoom: 19,
@@ -304,7 +304,7 @@
                             icon: orangeIcon
                         })
                         .addTo(attendanceMaps.out)
-                        .bindPopup('<b>📍 Check Out Location</b>');
+                        .bindPopup('<b>📍 {{ __('Check Out Location') }}</b>');
 
                     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                         maxZoom: 19,
@@ -336,7 +336,7 @@
             if (distEl) {
                 let text, colorClass;
                 if (distance < 1000) {
-                    text = `${distance.toFixed(2)} meter`;
+                    text = `${distance.toFixed(2)} {{ __('meters') }}`;
                     colorClass = distance < 100 ? 'text-green-600 dark:text-green-400' :
                         distance < 500 ? 'text-yellow-600 dark:text-yellow-400' :
                         'text-orange-600 dark:text-orange-400';
