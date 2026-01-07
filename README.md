@@ -1,8 +1,8 @@
-# Aplikasi Absensi GPS dan Barcode
+# PasPapan - Aplikasi Presensi GPS & Barcode
 
-![Aplikasi Absensi GPS dan Barcode](./screenshots/hero.png)
+![PasPapan Application](./screenshots/hero.png)
 
-Aplikasi absensi karyawan yang modern, responsif, dan kaya fitur menggunakan QR Code dan GPS untuk validasi lokasi. Dibangun dengan framework Laravel 11 dan teknologi web terkini.
+**PasPapan** adalah aplikasi presensi karyawan yang modern, responsif, dan kaya fitur menggunakan QR Code dan GPS untuk validasi lokasi. Dibangun dengan framework Laravel 11 dan teknologi web terkini.
 
 > **Note**: Pengembangan fitur dan perbaikan bug pada aplikasi ini dilakukan dengan bantuan **AI (Artificial Intelligence)**.
 
