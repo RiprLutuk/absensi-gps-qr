@@ -11,6 +11,11 @@ Dibangun dengan stack teknologi terkini: **Laravel 11, Livewire, Tailwind CSS, d
 
 ## 🚀 Fitur Unggulan
 
+
+> **Credit / Sumber Asli**: Inti dari aplikasi ini dikembangkan berdasarkan source code asli dari [ikhsan3adi/absensi-karyawan-gps-barcode](https://github.com/ikhsan3adi/absensi-karyawan-gps-barcode).
+
+> **Note**: Pengembangan fitur dan perbaikan bug pada aplikasi ini dilakukan dengan bantuan **AI (Artificial Intelligence)**.
+
 ## 🌟 Fitur Lengkap
 
 ### 📱 User / Karyawan (Mobile & Web)
