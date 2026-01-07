@@ -82,7 +82,7 @@ class SystemMaintenance extends Component
         }
     }
 
-    public function downloadBackup()
+    public function cleanDatabase()
     {
         if (!Auth::user()->isSuperadmin) {
             $this->dispatch('error', message: 'Unauthorized action.');
