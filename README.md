@@ -1,227 +1,105 @@
-# PasPapan - Aplikasi Presensi GPS & Barcode
+![PasPapan Hero](./screenshots/paspapan-hero.png)
 
-![PasPapan Application](./screenshots/hero.png)
+# PasPapan - Modern Attendance System
+**Sistem Absensi Karyawan Berbasis GPS Geofencing & QR Code**
 
-**PasPapan** adalah aplikasi presensi karyawan yang modern, responsif, dan kaya fitur menggunakan QR Code dan GPS untuk validasi lokasi. Dibangun dengan framework Laravel 11 dan teknologi web terkini.
+PasPapan adalah solusi presensi modern yang dirancang untuk efisiensi dan akurasi tinggi. Menggabungkan teknologi **GPS Geofencing** untuk validasi lokasi dan **QR Code** dinamik untuk keamanan, aplikasi ini memastikan data kehadiran karyawan tercatat secara real-time dan valid.
 
-> **Note**: Pengembangan fitur dan perbaikan bug pada aplikasi ini dilakukan dengan bantuan **AI (Artificial Intelligence)**.
+Dibangun dengan stack teknologi terkini: **Laravel 11, Livewire, Tailwind CSS, dan Capacitor**, PasPapan siap digunakan baik sebagai Web App maupun Aplikasi Mobile Native (Android).
 
-> **Credit / Sumber Asli**: Inti dari aplikasi ini dikembangkan berdasarkan source code asli dari [ikhsan3adi/absensi-karyawan-gps-barcode](https://github.com/ikhsan3adi/absensi-karyawan-gps-barcode).
+---
 
-## Teknologi yang Digunakan
+## 🚀 Fitur Unggulan
 
-*   **Backend**: [Laravel 11](https://laravel.com/)
-*   **Frontend**: [Laravel Jetstream](https://jetstream.laravel.com/), [Livewire](https://livewire.laravel.com/), [Tailwind CSS](https://tailwindcss.com/)
-*   **Database**: MySQL/MariaDB
-*   **QR Code**: [Endroid QR Code](https://github.com/endroid/qr-code) (Generation), [html5-qrcode](https://github.com/mebjas/html5-qrcode) (Scanning)
-*   **Maps**: [Leaflet.js](https://leafletjs.com/) & [OpenStreetMap](https://www.openstreetmap.org/)
-*   **Mobile / Cross-platform**: [Capacitor](https://capacitorjs.com/) (Native Runtime for iOS & Android)
-*   **UI Components**: [Tom Select](https://tom-select.js.org/) (Searchable Dropdowns), [Chart.js](https://www.chartjs.org/)
+### 📍 Smart Location Validation (GPS Geofencing)
+*   **Radius Protection**: Sistem akan menolak absensi jika karyawan berada di luar radius kantor yang ditentukan (misal: 50 meter).
+*   **Anti-Fake GPS**: Deteksi dini penggunaan aplikasi Fake GPS untuk integritas data.
+*   **Real-time Tracking**: Memantau lokasi karyawan saat melakukan scan masuk/pulang.
 
-## Fitur Unggulan
+### 📸 Advanced QR & Barcode Scanner
+*   **Dynamic QR Code**: QR Code untuk absensi (shift) dapat diganti secara berkala oleh admin untuk mencegah titip absen.
+*   **Multi-Camera Support**: Mendukung penggunaan kamera depan dan belakang dengan fitur mirroring alami.
+*   **Fast Scanning**: Menggunakan library scanning modern yang cepat dan akurat.
 
-### 📸 Scanner Canggih
-*   **Camera Switching**: Dukungan kamera depan dan belakang.
-*   **Mirroring**: Tampilan kamera yang natural (seperti cermin).
-*   **Validasi Lokasi**: Memastikan karyawan berada dalam radius yang ditentukan saat scan.
+### 📱 Native Mobile Experience (Android)
+*   **Pull-to-Refresh**: Refresh data dengan gestur tarik layar yang halus (Material Design style).
+*   **Native Features**: Integrasi mendalam dengan hardware HP (Kamera & GPS) melalui Capacitor layer.
+*   **Scrollable Menu**: Navigasi mobile yang responsif dan mudah digunakan.
 
-### 🎨 UI/UX Modern & Responsif
-*   **Tom Select**: Dropdown filter yang dapat dicari (Searchable) untuk Divisi, Jabatan, dll.
-*   **Live Search**: Pencarian data (Karyawan, Log) secara real-time.
-*   **Dark Mode**: Mendukung mode gelap sepenuhnya.
-*   **Responsive Charts**: Grafik tren kehadiran yang menyesuaikan ukuran layar.
-*   **Icon Actions**: Tombol aksi yang minimalis dan intuitif.
+### 🎨 Premium UI/UX
+*   **Dark Mode**: Tampilan yang nyaman di mata dengan dukungan mode gelap otomatis maupun manual.
+*   **Responsive Dashboard**: Grafik dan tabel laporan yang menyesuaikan ukuran layar (Desktop/Tablet/Mobile).
+*   **Interactive Components**: Menggunakan Tom Select untuk filter yang cepat dan Toast notification yang informatif.
 
-### 📊 Laporan & Ekspor Data
-*   **Automatic Export Preview**: Pratinjau data ekspor (Excel) muncul otomatis saat memfilter (Tahun, Bulan, Divisi, dll).
-*   **Dynamic Filters**: Filter data berdasarkan tahun, bulan, divisi, jabatan, dan pendidikan.
-*   **Activity Logs**: Log aktivitas admin yang diringkas (aggregated) untuk menghindari spam data.
+### 📊 Comprehensive Reporting
+*   **Excel Export**: Download laporan absensi bulanan/tahunan dalam format Excel (.xlsx) dengan sekali klik.
+*   **Activity Logs**: Pantau aktivitas admin dan perubahan data penting dalam log sistem.
+*   **Live Dashboard**: Ringkasan kehadiran hari ini (Hadir, Izin, Sakit, Terlambat) secara real-time.
 
-### 📱 Dukungan Multi-platform
-*   **Web App**: Akses melalui browser (Chrome, Safari, dll) dengan tampilan responsif.
-*   **Android / iOS Native**: Dibangun dengan **Capacitor** untuk dikompilasi menjadi aplikasi native (APK), memungkinkan akses fitur native seperti Kamera dan Geolocation yang lebih stabil.
+---
 
-## Instalasi
+## 🛠️ Teknologi (Tech Stack)
 
-### Prasyarat
+*   **Framework**: [Laravel 11](https://laravel.com) (PHP 8.3+)
+*   **Frontend**: [Livewire 3](https://livewire.laravel.com), [Tailwind CSS](https://tailwindcss.com), [Alpine.js](https://alpinejs.dev)
+*   **Database**: MySQL / MariaDB
+*   **Mobile Engine**: [Capacitor](https://capacitorjs.com) (Android Native Runtime)
+*   **Maps**: [Leaflet.js](https://leafletjs.com) & OpenStreetMap
+*   **Build Tool**: [Vite](https://vitejs.dev) & [Bun](https://bun.sh) (Recommended)
 
-*   [Composer](https://getcomposer.org)
-*   [Bun](https://bun.sh) (Recommended) -> *Install: `curl -fsSL https://bun.sh/install | bash`*
-    *   Atau gunakan: [Node.js & NPM](https://nodejs.org)
-*   PHP 8.3 atau lebih tinggi
-*   MySQL/MariaDB
+---
 
-### Langkah-langkah
+## ⚙️ Instalasi & Setup
 
-1.  **Clone Repository**
-    ```bash
-    git clone https://github.com/RiprLutuk/absensi-gps-qr.git
-    cd absensi-gps-qr
-    ```
-
-2.  **Setup Environment**
-    Salin file `.env.example` ke `.env` dan sesuaikan konfigurasi database.
-    ```bash
-    cp .env.example .env
-    ```
-
-3.  **Install Dependencies**
-    ```bash
-    composer install
-    bun install
-    # atau: npm install
-    ```
-
-4.  **Generate Key**
-    ```bash
-    php artisan key:generate
-    ```
-
-5.  **Setup Database & Migrations**
-    Pastikan database sudah dibuat di MySQL, lalu jalankan migrasi.
-    ```bash
-    php artisan migrate
-    ```
-
-6.  **Build Assets**
-    ```bash
-    bun run build
-    # atau: npm run build
-    ```
-
-7.  **Jalankan Aplikasi**
-    ```bash
-    php artisan serve
-    ```
-
-### Seeder (Data Awal)
-
-Untuk mengisi database dengan data awal atau data dummy untuk testing:
-
-*   **Data Utama Saja (Admin, Divisi, dll)**:
-    ```bash
-    php artisan db:seed DatabaseSeeder
-    ```
-*   **Data Lengkap dengan Dummy (Karyawan, Absensi)**:
-    ```bash
-    php artisan db:seed FakeDataSeeder
-    ```
-
-### Implementasi Aplikasi Mobile (Android/APK)
-
-Aplikasi ini menggunakan [Capacitor](https://capacitorjs.com/) untuk mengonversi web app menjadi aplikasi Android native.
-
-#### Prasyarat
-*   [Android Studio](https://developer.android.com/studio) (terbaru)
-*   Android SDK Command-line Tools (install via Android Studio SDK Manager)
-
-#### Langkah Build
-
-1.  **Build Web Assets**
-    Pastikan aset web terbaru sudah dibuild.
-    ```bash
-    bun run build
-    # atau: npm run build
-    ```
-
-2.  **Sync ke Android**
-    Salin aset web yang sudah dibuild ke direktori Android project.
-    ```bash
-    bunx cap sync android
-    # atau: npx cap sync android
-    ```
-
-3.  **Buka Android Studio**
-    Jalankan perintah ini untuk membuka project di Android Studio.
-    ```bash
-    bunx cap open android
-    # atau: npx cap open android
-    ```
-
-4.  **Build APK**
-    *   Di Android Studio, tunggu hingga proses indexing (Gradle sync) selesai.
-    *   Klik menu **Build** > **Build Bundle(s) / APK(s)** > **Build APK(s)**.
-    *   Tunggu proses selesai. Notifikasi akan muncul di pojok kanan bawah.
-    *   Klik **locate** pada notifikasi untuk menemukan file `.apk` (biasanya di `android/app/build/outputs/apk/debug/app-debug.apk`).
-
-#### Alternatif: Build Tanpa Membuka Android Studio (CLI Only)
-
-Jika Anda tidak ingin membuka Android Studio, Anda bisa menggunakan perintah berikut via terminal:
-
+### 1. Web / Backend Setup
 ```bash
+# Clone repository
+git clone https://github.com/RiprLutuk/PasPapan.git
+cd PasPapan
+
+# Setup Environment
+cp .env.example .env
+# (Konfigurasi database di .env)
+
+# Install Dependencies
+composer install
+bun install  # atau npm install
+
+# Generate Key & Migrate
+php artisan key:generate
+php artisan migrate --seed
+
+# Build Assets
 bun run build
-bunx cap sync android
-cd android
-./gradlew clean assembleDebug
-adb uninstall com.absensi.test || true
-adb install app/build/outputs/apk/debug/app-debug.apk
-adb logcat | grep Capacitor
+
+# Jalankan Server
+php artisan serve
 ```
 
-#### Catatan Penting (Debugging)
-*   Jika menjalankan server lokal (`php artisan serve`), pastikan aplikasi mobile mengarah ke IP Address komputer Anda (misal `http://192.168.1.x:8000`), bukan `localhost` atau `127.0.0.1`.
-*   Konfigurasi URL server dapat dicek di file `.env` atau `capacitor.config.ts` (jika ada konfigurasi `server.url` untuk live reload).
+### 2. Mobile / Android Build
+Pastikan Anda memiliki Android Studio dan SDK terinstall.
+```bash
+# Sync Aset Web ke Android
+npx cap sync android
 
-## Panduan Penggunaan
+# Build APK (Release)
+cd android
+./gradlew assembleRelease
 
-### 👨‍💼 Administrator
+# Lokasi APK: android/app/build/outputs/apk/release/app-release-unsigned.apk
+```
 
-1.  **Dashboard**: Pantau kehadiran hari ini, tren mingguan, dan log aktivitas terbaru.
-2.  **Master Data**: Kelola Divisi, Jabatan, Pendidikan, dan Shift.
-3.  **Data Karyawan**: Tambah, edit, dan kelola akun karyawan. Password default karyawan adalah `password`.
-4.  **Barcode**: Buat QR Code untuk setiap shift. Cetak atau tampilkan QR Code ini untuk discan karyawan.
-5.  **Import/Export**:
-    *   Masuk ke menu **Import/Export**.
-    *   Pilih filter (Tahun, Bulan, Divisi, dll).
-    *   **Pratinjau** akan muncul otomatis di bawah form.
-    *   Klik **Export** untuk mengunduh file Excel.
+---
 
-### 👷 Karyawan
+## 💌 Dukungan & Kontribusi
 
-1.  **Scan Absensi**:
-    *   Buka menu **Scan**.
-    *   Izinkan akses kamera dan lokasi.
-    *   Arahkan kamera ke QR Code shift.
-    *   Sistem akan memvalidasi lokasi dan mencatat kehadiran (Masuk/Pulang).
-2.  **Riwayat Absensi**: Lihat riwayat kehadiran pribadi.
-3.  **Pengajuan Izin**: Ajukan izin atau sakit melalui form aplikasi.
+Proyek ini Open Source dan gratis digunakan. Jika aplikasi ini membantu bisnis atau pembelajaran Anda, dukungan Anda sangat berarti!
 
-## Screenshot
-### User/Karyawan (Mobile View)
+<a href="https://github.com/RiprLutuk/PasPapan">
+  <img src="https://img.shields.io/github/stars/RiprLutuk/PasPapan?style=social" alt="GitHub Stars">
+</a>
 
-| Login & Home | Main Features | User Menu |
-|:---:|:---:|:---:|
-| <img src="./screenshots/user-login-mobile.png" height="320px"> <img src="./screenshots/user-home-mobile-full.png" height="320px"> | <img src="./screenshots/user-full-scan-mobile-full.png" height="320px"> <img src="./screenshots/user-history-mobile-full.png" height="320px"> | <img src="./screenshots/user-profile-mobile-full.png" height="320px"> <img src="./screenshots/user-apply-leave-mobile-full.png" height="320px"> |
-| **Login & Dashboard** | **Scan & Riwayat** | **Profil & Izin** |
+---
 
-### Admin & Superadmin (Light vs Dark)
-
-| Page | Light Mode | Dark Mode |
-|---|---|---|
-| **Dashboard** | ![Dash Light](./screenshots/admin-dashboard-full.png) | ![Dash Dark](./screenshots/admin-dashboard-dark-full.png) |
-| **Karyawan** | ![Emp Light](./screenshots/admin-employees-full.png) | ![Emp Dark](./screenshots/admin-employees-dark-full.png) |
-| **Barcodes** | ![Bar Light](./screenshots/admin-barcodes-full.png) | ![Bar Dark](./screenshots/admin-barcodes-dark-full.png) |
-| **Import/Export** | ![Import Light](./screenshots/admin-import-export-full.png) | ![Import Dark](./screenshots/admin-import-export-dark-full.png) |
-
-## Estimasi Biaya (Budget)
-
-Aplikasi ini telah dioptimasi untuk berjalan lancar di **Shared Hosting** murah. Berikut adalah estimasi biaya operasional tahunan:
-
-| Komponen | Estimasi Biaya | Keterangan |
-|---|---|---|
-| **Domain** (.com) | Rp 165.000 / tahun | Identitas website |
-| **Shared Hosting** | Rp 300.000 / tahun | Spesifikasi: 1GB RAM, 1 Core (Cukup) |
-| **Total** | **Rp 465.000 / tahun** | kurang dari Rp 40.000 / bulan |
-
-## Donasi ❤
-
-Jika aplikasi ini bermanfaat, Anda bisa memberikan dukungan melalui:
-
-<img src="./screenshots/donation-qr.png" width="150px">
-
-*Atau beri bintang ⭐ di repository ini!*
-
-
-## Lisensi
-
-Aplikasi ini dilisensikan di bawah [MIT License](LICENSE).
+## 📄 Lisensi
+[MIT License](LICENSE) - Bebas digunakan dan dimodifikasi untuk keperluan pribadi maupun komersial.
