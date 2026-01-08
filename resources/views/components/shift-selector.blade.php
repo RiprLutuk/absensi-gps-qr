@@ -8,7 +8,7 @@
             'name' => $shift->name . ' | ' . \App\Helpers::format_time($shift->start_time) . ' - ' . \App\Helpers::format_time($shift->end_time)
         ])->values()->toArray()"
         placeholder="{{ __('Select Shift') }}"
-        :disabled="!is_null($attendance)" />
+        placeholder="{{ __('Select Shift') }}" />
     @error('shift_id')
         <x-input-error for="shift" class="mt-2" message="{{ $message }}" />
     @enderror

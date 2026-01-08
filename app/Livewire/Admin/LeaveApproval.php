@@ -70,7 +70,7 @@ class LeaveApproval extends Component
     {
         Attendance::whereIn('id', $this->selectedIds)->update([
             'approval_status' => Attendance::STATUS_REJECTED,
-            'status' => 'rejected', // Change main status to rejected as requested
+            'status' => 'rejected', // Revert: Set explicit rejected status
             'rejection_note' => $this->rejectionNote,
             'approved_by' => Auth::id(),
             'approved_at' => now(),

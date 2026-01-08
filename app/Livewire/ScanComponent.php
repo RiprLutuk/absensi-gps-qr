@@ -50,7 +50,10 @@ class ScanComponent extends Component
             ->where('date', date('Y-m-d'))
             ->first();
 
-        if ($attendanceForDay && in_array($attendanceForDay->status, ['sick', 'excused'])) {
+        if ($attendanceForDay && 
+            in_array($attendanceForDay->status, ['sick', 'excused']) && 
+            $attendanceForDay->approval_status === Attendance::STATUS_APPROVED // Only block if explicitly Approved
+        ) {
             return __('Anda tidak dapat melakukan absensi karena sedang Cuti/Izin/Sakit.');
         }
 
@@ -181,14 +184,17 @@ class ScanComponent extends Component
     }
 
     private function saveAttendanceRequest($barcode, $date, $timeIn, $status, $attachmentPath, $shift) {
-        // Check if there is a rejected attendance for this user and date
-        $rejectedAttendance = Attendance::where('user_id', Auth::user()->id)
+        // Check if there is an existing record to override (Rejected, Absent, or Pending Sick/Excused)
+        $overrideable = Attendance::where('user_id', Auth::user()->id)
             ->where('date', $date)
-            ->where('status', 'rejected')
+            ->where(function($q) {
+                $q->whereIn('status', ['rejected', 'absent', 'sick', 'excused'])
+                  ->orWhere('approval_status', Attendance::STATUS_REJECTED);
+            })
             ->first();
 
-        if ($rejectedAttendance) {
-            $rejectedAttendance->update([
+        if ($overrideable) {
+            $overrideable->update([
                 'barcode_id' => $barcode->id,
                 'time_in' => $timeIn,
                 'time_out' => null,
@@ -200,12 +206,12 @@ class ScanComponent extends Component
                 'longitude' => doubleval($this->currentLiveCoords[1]),
 
                 'status' => $status,
-                'note' => null, // Clear note or keep rejection note? User probably wants to start fresh.
+                'note' => null, 
                 'attachment' => $attachmentPath ? json_encode(['in' => $attachmentPath]) : null,
-                'rejection_note' => null, // Clear rejection note as they are now attending
-                'approval_status' => null, // Reset approval status
+                'rejection_note' => null,
+                'approval_status' => Attendance::STATUS_APPROVED, // Auto-approve presence
             ]);
-            return $rejectedAttendance;
+            return $overrideable;
         }
 
         return Attendance::create([
@@ -234,7 +240,7 @@ class ScanComponent extends Component
     {
         $this->attendance = $attendance;
         $this->shift_id = $attendance->shift_id;
-        $this->isAbsence = $attendance->status !== 'present' && $attendance->status !== 'late';
+        $this->isAbsence = in_array($attendance->status, ['sick', 'excused']) && $attendance->approval_status === Attendance::STATUS_APPROVED;
     }
 
     public function getAttendance()
@@ -263,7 +269,10 @@ class ScanComponent extends Component
 
         if ($attendance) {
             $this->setAttendance($attendance);
-        } else {
+        } 
+        
+        // Fallback: If no shift_id (e.g. from rejected leave), try auto-detect
+        if (is_null($this->shift_id)) {
             // Priority 1: Check Manual Schedule
             /** @var \App\Models\Schedule */
             $schedule = \App\Models\Schedule::where('user_id', Auth::user()->id)
