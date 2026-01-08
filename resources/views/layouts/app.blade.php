@@ -59,7 +59,22 @@
             </header>
         @endif -->
 
-        <!-- Page Content -->
+        <!-- Mosallas Refresh Container -->
+        <div class="refresh-container">
+            <div class="spinner">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2V6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 18V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M4.92993 4.92999L7.75993 7.75999" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M16.24 16.24L19.07 19.07" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 12H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M18 12H22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M4.92993 19.07L7.75993 16.24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M16.24 7.75999L19.07 4.92999" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+        </div>
+
         <main id="main-content">
             {{ $slot }}
         </main>
@@ -96,35 +111,6 @@
 
     @stack('scripts')
     
-    <script src="{{ asset('js/pulltorefresh.js') }}"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const isPWA = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone || document.referrer.includes('android-app://');
-            // Safer check for Capacitor native platform
-            const isNative = window.Capacitor && (
-                (typeof Capacitor.isNativePlatform === 'function' && Capacitor.isNativePlatform()) ||
-                Capacitor.isNativePlatform === true ||
-                Capacitor.getPlatform() !== 'web'
-            );
-
-            const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-
-            if (isPWA || isNative || isTouch) {
-                PullToRefresh.init({
-                    mainElement: '#main-content',
-                    triggerElement: 'body',
-                    onRefresh() {
-                        window.location.reload();
-                    },
-                    iconArrow: '<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>',
-                    iconRefreshing: '<svg class="w-6 h-6 animate-spin" fill="currentColor" viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>',
-                    instructionsPullToRefresh: ' ',
-                    instructionsReleaseToRefresh: ' ',
-                    instructionsRefreshing: ' ',
-                });
-            }
-        });
-    </script>
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {

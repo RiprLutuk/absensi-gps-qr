@@ -83,6 +83,128 @@ window.openMap = (lat, lng) => {
     }
 };
 
+// Mosallas-Group Pull-to-Refresh Logic Port
+document.addEventListener('DOMContentLoaded', () => {
+    const refreshContainer = document.querySelector(".refresh-container");
+    const spinner = document.querySelector(".spinner");
+    
+    // We don't strictly need 'main' for Overlay style if we aren't moving it
+    // But we might want to check if it exists purely for safety
+    if (!refreshContainer || !spinner) return;
+
+    let isLoading = false;
+    let pStartY = 0;
+    
+    // Threshold to trigger refresh
+    const THRESHOLD = 80;
+
+    const loadInit = () => {
+        refreshContainer.classList.add("load-init");
+        isLoading = true;
+    };
+
+    const swipeStart = (e) => {
+        if (isLoading) return;
+        
+        // Only track if we are at the top (or very close)
+        // Using 2px tolerance for safe measure
+        if (window.scrollY > 2) return;
+
+        pStartY = e.touches[0].screenY;
+        
+        // Remove transitions during drag
+        refreshContainer.style.transition = 'none';
+        spinner.style.transition = 'none';
+    };
+
+    const swipe = (e) => {
+        if (isLoading || pStartY === 0) return;
+
+        const touch = e.touches[0];
+        const currentY = touch.screenY;
+        const diff = currentY - pStartY;
+
+        // Only handle Pull Down when at Top
+        if (diff > 0 && window.scrollY <= 2) {
+            // Prevent native scroll/overscroll behavior
+            if (e.cancelable) e.preventDefault();
+
+            // Resistance Logic
+            // Formula: (diff * 0.5) to feel "heavy"
+            const pullDistance = diff * 0.5;
+
+            // Cap the visual pull distance
+            if (pullDistance <= 250) {
+                // Determine Offset:
+                // Start: -50px (hidden)
+                // Pull 0px -> -50px
+                // Pull 100px -> 50px visual
+                const marginTop = pullDistance - 50;
+                
+                refreshContainer.style.marginTop = `${marginTop}px`;
+                spinner.style.transform = `rotate(${pullDistance * 2.5}deg)`;
+            }
+        }
+    };
+
+    const swipeEnd = (e) => {
+        if (isLoading || pStartY === 0) {
+            pStartY = 0; // Reset
+            return;
+        }
+
+        const touch = e.changedTouches[0];
+        const currentY = touch.screenY;
+        const diff = currentY - pStartY;
+        const pullDistance = diff * 0.5;
+
+        // Restore Transitions
+        refreshContainer.style.transition = 'margin-top 0.3s cubic-bezier(0.25, 1, 0.5, 1)';
+        spinner.style.transition = 'transform 0.3s linear';
+
+        pStartY = 0; // Reset start marker
+
+        // Trigger?
+        if (pullDistance >= THRESHOLD && window.scrollY <= 2) {
+            // YES - Refresh
+            loadInit();
+            
+            // Snap to "Active" position
+            // e.g. 20px from top
+            refreshContainer.style.marginTop = "15px"; 
+            refreshContainer.classList.add("load-start");
+            
+            // Reload after delay
+            setTimeout(() => {
+                window.location.reload();
+            }, 800);
+            
+            // Safety timeout
+            setTimeout(() => {
+                resetLayout();
+            }, 5000);
+
+        } else {
+            // NO - Reset
+            resetLayout();
+        }
+    };
+
+    const resetLayout = () => {
+        isLoading = false;
+        refreshContainer.classList.remove("load-init");
+        refreshContainer.classList.remove("load-start");
+        refreshContainer.style.marginTop = "-50px";
+        spinner.style.transform = "rotate(0deg)";
+    };
+    
+    // Use non-passive listener to allow preventDefault()
+    document.addEventListener("touchstart", swipeStart, { passive: true });
+    // IMPORTANT: passive: false is required to block native scroll
+    document.addEventListener("touchmove", swipe, { passive: false });
+    document.addEventListener("touchend", swipeEnd, { passive: true });
+});
+
 /*
 (function () {
     if (!window.Capacitor?.isNativePlatform?.()) return;

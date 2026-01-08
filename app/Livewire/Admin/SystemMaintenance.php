@@ -29,7 +29,7 @@ class SystemMaintenance extends Component
     public function restoreDatabase()
     {
         if (!Auth::user()->isSuperadmin) {
-            $this->dispatch('error', message: 'Unauthorized action.');
+            $this->dispatch('error', message: __('Unauthorized action.'));
             return;
         }
 
@@ -43,7 +43,7 @@ class SystemMaintenance extends Component
             // Validate extension manually strictly
             $extension = $this->backupFile->getClientOriginalExtension();
             if (strtolower($extension) !== 'sql') {
-                $this->dispatch('error', message: 'Invalid file type. Only .sql files are allowed.');
+                $this->dispatch('error', message: __('Invalid file type. Only .sql files are allowed.'));
                 return;
             }
 
@@ -72,25 +72,25 @@ class SystemMaintenance extends Component
                 throw new ProcessFailedException($process);
             }
 
-            $this->dispatch('success', message: 'Database restored successfully! The page will reload.');
+            $this->dispatch('success', message: __('Database restored successfully! The page will reload.'));
             
             // Delay reload to let toast show
             $this->js("setTimeout(function(){ window.location.reload(); }, 2000);");
 
         } catch (\Exception $e) {
-            $this->dispatch('error', message: 'Restore failed: ' . $e->getMessage());
+            $this->dispatch('error', message: __('Restore failed: ') . $e->getMessage());
         }
     }
 
     public function cleanDatabase()
     {
         if (!Auth::user()->isSuperadmin) {
-            $this->dispatch('error', message: 'Unauthorized action.');
+            $this->dispatch('error', message: __('Unauthorized action.'));
             return;
         }
 
         if (!$this->cleanAttendances && !$this->cleanActivityLogs && !$this->cleanNonAdminUsers && !$this->cleanNotifications && !$this->cleanStorage) {
-            $this->dispatch('warning', message: 'Please select at least one option to clean.');
+            $this->dispatch('warning', message: __('Please select at least one option to clean.'));
             return;
         }
 
@@ -136,7 +136,7 @@ class SystemMaintenance extends Component
                 Storage::disk('public')->makeDirectory('attachments');
             }
 
-            $this->dispatch('success', message: 'Selected data and files cleaned successfully.');
+            $this->dispatch('success', message: __('Selected data and files cleaned successfully.'));
             
             // Reset checkboxes
             $this->cleanAttendances = false;
@@ -146,14 +146,14 @@ class SystemMaintenance extends Component
             $this->cleanNonAdminUsers = false;
 
         } catch (\Exception $e) {
-            $this->dispatch('error', message: 'Failed to clean database: ' . $e->getMessage());
+            $this->dispatch('error', message: __('Failed to clean database: ') . $e->getMessage());
         }
     }
 
     public function downloadBackup()
     {
         if (!Auth::user()->isSuperadmin) {
-            $this->dispatch('error', message: 'Unauthorized action.');
+            $this->dispatch('error', message: __('Unauthorized action.'));
             return;
         }
 
@@ -190,7 +190,7 @@ class SystemMaintenance extends Component
             return response()->download($path)->deleteFileAfterSend(true);
 
         } catch (\Exception $e) {
-            $this->dispatch('error', message: 'Backup failed: ' . $e->getMessage());
+            $this->dispatch('error', message: __('Backup failed: ') . $e->getMessage());
         }
     }
 
