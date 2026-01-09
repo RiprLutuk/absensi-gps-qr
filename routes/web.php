@@ -123,6 +123,12 @@ Route::middleware([
         
         Route::get('/analytics', \App\Livewire\Admin\AnalyticsDashboard::class)
             ->name('admin.analytics');
+        
+        // Holidays & Announcements (v1.3.0)
+        Route::get('/holidays', \App\Livewire\Admin\HolidayManager::class)
+            ->name('admin.holidays');
+        Route::get('/announcements', \App\Livewire\Admin\AnnouncementManager::class)
+            ->name('admin.announcements');
     });
 });
 

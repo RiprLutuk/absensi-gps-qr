@@ -1,53 +1,65 @@
 {
+  "id": "/",
   "name": "PasPapan - Absensi GPS & Barcode",
   "short_name": "PasPapan",
+  "description": "Aplikasi absensi modern dengan GPS tracking, barcode scanning, dan approval system.",
   "start_url": "/",
+  "scope": "/",
   "background_color": "#ffffff",
   "theme_color": "#4f46e5",
   "display": "standalone",
   "orientation": "portrait",
+  "categories": ["business", "productivity"],
   "icons": [
     {
       "src": "assets/icons/icon-48.webp",
-      "type": "image/png",
+      "type": "image/webp",
       "sizes": "48x48",
       "purpose": "any maskable"
     },
     {
       "src": "assets/icons/icon-72.webp",
-      "type": "image/png",
+      "type": "image/webp",
       "sizes": "72x72",
       "purpose": "any maskable"
     },
     {
       "src": "assets/icons/icon-96.webp",
-      "type": "image/png",
+      "type": "image/webp",
       "sizes": "96x96",
       "purpose": "any maskable"
     },
     {
       "src": "assets/icons/icon-128.webp",
-      "type": "image/png",
+      "type": "image/webp",
       "sizes": "128x128",
       "purpose": "any maskable"
     },
     {
       "src": "assets/icons/icon-192.webp",
-      "type": "image/png",
+      "type": "image/webp",
       "sizes": "192x192",
       "purpose": "any maskable"
     },
     {
       "src": "assets/icons/icon-256.webp",
-      "type": "image/png",
+      "type": "image/webp",
       "sizes": "256x256",
       "purpose": "any maskable"
     },
     {
       "src": "assets/icons/icon-512.webp",
-      "type": "image/png",
+      "type": "image/webp",
       "sizes": "512x512",
       "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "assets/icons/icon-512.webp",
+      "sizes": "512x512",
+      "type": "image/webp",
+      "form_factor": "narrow"
     }
   ]
 }

@@ -21,7 +21,7 @@
                         </x-nav-link>
 
                         {{-- 2. Attendance Group --}}
-                        <x-nav-dropdown :active="request()->routeIs('admin.attendances') || request()->routeIs('admin.leaves') || request()->routeIs('admin.analytics') || request()->routeIs('admin.schedules')" triggerClasses="text-nowrap">
+                        <x-nav-dropdown :active="request()->routeIs('admin.attendances') || request()->routeIs('admin.leaves') || request()->routeIs('admin.analytics') || request()->routeIs('admin.schedules') || request()->routeIs('admin.holidays') || request()->routeIs('admin.announcements')" triggerClasses="text-nowrap">
                             <x-slot name="trigger">
                                 {{ __('Attendance') }}
                                 <x-heroicon-o-chevron-down class="ms-2 h-5 w-5 text-gray-400" />
@@ -42,6 +42,13 @@
                                 <div class="border-t border-gray-200 dark:border-gray-600"></div>
                                 <x-dropdown-link href="{{ route('admin.analytics') }}" :active="request()->routeIs('admin.analytics')" wire:navigate>
                                     {{ __('Analytics') }}
+                                </x-dropdown-link>
+                                <div class="border-t border-gray-200 dark:border-gray-600"></div>
+                                <x-dropdown-link href="{{ route('admin.holidays') }}" :active="request()->routeIs('admin.holidays')" wire:navigate>
+                                    🗓️ {{ __('Holidays') }}
+                                </x-dropdown-link>
+                                <x-dropdown-link href="{{ route('admin.announcements') }}" :active="request()->routeIs('admin.announcements')" wire:navigate>
+                                    📢 {{ __('Announcements') }}
                                 </x-dropdown-link>
                             </x-slot>
                         </x-nav-dropdown>

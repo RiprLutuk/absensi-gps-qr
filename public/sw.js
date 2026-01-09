@@ -1,54 +1,79 @@
-const CACHE_NAME = 'absensi-cache-v1';
-const urlsToCache = [
+const CACHE_NAME = 'paspapan-v1.3.0';
+const OFFLINE_URL = '/offline';
+
+// Assets to cache on install
+const PRECACHE_ASSETS = [
     '/',
     '/offline',
-    '/build/assets/app.css', // Note: We need dynamic versioning here ideally, but for now we try generic or need mechanism
-    '/images/icons/icon-192x192.png'
+    '/build/assets/app-uOlfjKee.css',
+    '/build/assets/app-BWQK0w48.js',
+    '/build/assets/vendor-BjH4IAbx.js',
+    '/assets/icons/icon-192.webp',
+    '/assets/icons/icon-512.webp',
 ];
 
-// Install SW
-self.addEventListener('install', event => {
+// Install event - precache assets
+self.addEventListener('install', (event) => {
     event.waitUntil(
-        caches.open(CACHE_NAME)
-            .then(cache => {
-                console.log('Opened cache');
-                // We don't fail if some assets are missing/dynamic
-                return cache.addAll(urlsToCache).catch(err => console.warn('Some assets failed to cache', err));
-            })
+        caches.open(CACHE_NAME).then((cache) => {
+            return cache.addAll(PRECACHE_ASSETS);
+        })
     );
+    self.skipWaiting();
 });
 
-// Cache and return requests
-self.addEventListener('fetch', event => {
-    event.respondWith(
-        caches.match(event.request)
-            .then(response => {
-                // Cache hit - return response
-                if (response) {
-                    return response;
-                }
-                return fetch(event.request).catch(() => {
-                    // If fetch fails (offline), try to return offline page for navigation requests
-                    if (event.request.mode === 'navigate') {
-                        return caches.match('/offline');
-                    }
-                });
-            })
-    );
-});
-
-// Update SW
-self.addEventListener('activate', event => {
-    const cacheWhitelist = [CACHE_NAME];
+// Activate event - clean old caches
+self.addEventListener('activate', (event) => {
     event.waitUntil(
-        caches.keys().then(cacheNames => {
+        caches.keys().then((cacheNames) => {
             return Promise.all(
-                cacheNames.map(cacheName => {
-                    if (cacheWhitelist.indexOf(cacheName) === -1) {
-                        return caches.delete(cacheName);
-                    }
-                })
+                cacheNames
+                    .filter((name) => name !== CACHE_NAME)
+                    .map((name) => caches.delete(name))
             );
         })
+    );
+    self.clients.claim();
+});
+
+// Fetch event - network first, fallback to cache
+self.addEventListener('fetch', (event) => {
+    // Skip non-GET requests
+    if (event.request.method !== 'GET') return;
+
+    // Skip Livewire/API requests
+    if (event.request.url.includes('/livewire/') ||
+        event.request.url.includes('/api/')) {
+        return;
+    }
+
+    event.respondWith(
+        fetch(event.request)
+            .then((response) => {
+                // Clone and cache successful responses
+                if (response.status === 200) {
+                    const responseClone = response.clone();
+                    caches.open(CACHE_NAME).then((cache) => {
+                        // Only cache same-origin assets
+                        if (new URL(event.request.url).origin === location.origin) {
+                            cache.put(event.request, responseClone);
+                        }
+                    });
+                }
+                return response;
+            })
+            .catch(() => {
+                // Network failed, try cache
+                return caches.match(event.request).then((cachedResponse) => {
+                    if (cachedResponse) {
+                        return cachedResponse;
+                    }
+                    // For navigation requests, show offline page
+                    if (event.request.mode === 'navigate') {
+                        return caches.match(OFFLINE_URL);
+                    }
+                    return new Response('Offline', { status: 503, statusText: 'Offline' });
+                });
+            })
     );
 });
