@@ -201,13 +201,13 @@
                     <div class="absolute top-2 right-2 w-2 h-2 rounded-full bg-violet-500"></div>
                 </div>
                 
-                {{-- Absent - Rose/Pink --}}
-                <div class="relative group p-4 rounded-xl bg-gradient-to-br from-rose-50 to-pink-50 dark:from-rose-900/30 dark:to-pink-900/30 border border-rose-200/50 dark:border-rose-700/30 hover:shadow-md transition-all col-span-2 sm:col-span-1">
+                {{-- Absent - Slate/Zinc (clearly different from Rejected red) --}}
+                <div class="relative group p-4 rounded-xl bg-gradient-to-br from-slate-100 to-zinc-100 dark:from-slate-800/50 dark:to-zinc-800/50 border border-slate-300/50 dark:border-slate-600/30 hover:shadow-md transition-all col-span-2 sm:col-span-1">
                     <div class="flex flex-col items-center">
-                        <span class="text-3xl font-black text-rose-600 dark:text-rose-400">{{ $counts['absent'] ?? 0 }}</span>
-                        <span class="text-xs font-medium text-rose-700 dark:text-rose-300 mt-1">{{ __('Absent') }}</span>
+                        <span class="text-3xl font-black text-slate-600 dark:text-slate-300">{{ $counts['absent'] ?? 0 }}</span>
+                        <span class="text-xs font-medium text-slate-700 dark:text-slate-400 mt-1">{{ __('Absent') }}</span>
                     </div>
-                    <div class="absolute top-2 right-2 w-2 h-2 rounded-full bg-rose-500"></div>
+                    <div class="absolute top-2 right-2 w-2 h-2 rounded-full bg-slate-500"></div>
                 </div>
             </div>
         </div>
