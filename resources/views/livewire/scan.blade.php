@@ -124,25 +124,7 @@
                     <p class="text-sm text-gray-600 dark:text-gray-300">{{ __('You\'ve successfully completed today\'s attendance') }}</p>
                 </div>
 
-                {{-- Summary Cards --}}
-                <div class="grid grid-cols-2 gap-3 sm:gap-4">
-                    @include('components.time-card', [
-                        'icon' =>
-                            'M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1',
-                        'bgColor' => 'blue',
-                        'label' => __('Check In'),
-                        'time' => \App\Helpers::format_time($attendance->time_in),
-                        'status' => $attendance->status,
-                    ])
-
-                    @include('components.time-card', [
-                        'icon' =>
-                            'M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1',
-                        'bgColor' => 'orange',
-                        'label' => __('Check Out'),
-                        'time' => \App\Helpers::format_time($attendance->time_out),
-                    ])
-                </div>
+                {{-- Summary Cards (Removed - Moved to Header) --}}
 
                 {{-- Location History Cards --}}
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
