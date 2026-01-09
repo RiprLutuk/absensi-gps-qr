@@ -39,7 +39,7 @@
             <input type="hidden" name="language" value="{{ app()->getLocale() == 'id' ? 'en' : 'id' }}">
             <button type="submit"
                 class="relative inline-flex h-6 w-12 shrink-0 cursor-pointer items-center rounded-full p-0.5 transition-colors duration-200 ease-in-out focus:outline-none bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600">
-                <span class="sr-only">Switch Language</span>
+                <span class="sr-only">{{ __('Switch Language') }}</span>
                 <!-- Labels -->
                 <span class="absolute inset-0 flex h-full w-full items-center justify-between px-1.5 text-[8px] font-bold text-gray-500 select-none">
                     <span>ID</span>

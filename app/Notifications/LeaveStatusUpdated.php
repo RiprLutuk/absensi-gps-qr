@@ -33,7 +33,11 @@ class LeaveStatusUpdated extends Notification
             'attendance_id' => $this->attendance->id,
             'status' => $this->attendance->approval_status,
             'date' => $this->attendance->date->format('Y-m-d'),
-            'message' => "Your leave for {$this->attendance->date->format('d M')} has been {$status} {$emoji}",
+            'date' => $this->attendance->date->format('Y-m-d'),
+            'message' => __('Your leave for :date has been :status', [
+                'date' => $this->attendance->date->format('d M'),
+                'status' => $status
+            ]) . " " . $emoji,
             'url' => route('attendance-history'),
         ];
     }
