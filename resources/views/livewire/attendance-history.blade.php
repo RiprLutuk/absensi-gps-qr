@@ -155,33 +155,77 @@
         @endif
     </div>
     
-    {{-- Summary Card (Separate) --}}
-    <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg border border-gray-200 dark:border-gray-700">
-        <div class="p-4 sm:p-6">
-            <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-4">{{ __('Attendance Summary') }}</h4>
-            <div class="flex flex-wrap justify-center gap-3 sm:gap-4">
-                 @foreach([
-                    'present' => ['label' => __('Present'), 'color' => 'bg-green-500', 'text' => 'text-green-700 dark:text-green-400'],
-                    'late' => ['label' => __('Late'), 'color' => 'bg-amber-500', 'text' => 'text-amber-700 dark:text-amber-400'],
-                    'excused' => ['label' => __('Excused'), 'color' => 'bg-blue-500', 'text' => 'text-blue-700 dark:text-blue-400'],
-                    'sick' => ['label' => __('Sick'), 'color' => 'bg-purple-500', 'text' => 'text-purple-700 dark:text-purple-400'],
-                    'absent' => ['label' => __('Absent'), 'color' => 'bg-red-500', 'text' => 'text-red-700 dark:text-red-400'],
-                ] as $key => $meta)
-                    <div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-50 dark:bg-gray-700/50 border border-gray-100 dark:border-gray-700">
-                        <span class="h-3 w-3 rounded-full {{ $meta['color'] }}"></span>
-                        <span class="text-sm text-gray-600 dark:text-gray-300">{{ $meta['label'] }}</span>
-                        <span class="text-lg font-bold {{ $meta['text'] }}">{{ $counts[$key] ?? 0 }}</span>
+    {{-- Summary Card (Modern Design) --}}
+    <div class="bg-gradient-to-br from-slate-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 shadow-lg rounded-2xl border border-gray-200/50 dark:border-gray-700/50 overflow-hidden">
+        <div class="p-5 sm:p-6">
+            <h4 class="text-base font-bold text-gray-800 dark:text-white mb-5 flex items-center gap-2">
+                <span class="w-1 h-5 bg-gradient-to-b from-indigo-500 to-purple-500 rounded-full"></span>
+                {{ __('Attendance Summary') }}
+            </h4>
+            
+            {{-- Stats Grid --}}
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
+                {{-- Present - Emerald/Teal --}}
+                <div class="relative group p-4 rounded-xl bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/30 dark:to-teal-900/30 border border-emerald-200/50 dark:border-emerald-700/30 hover:shadow-md transition-all">
+                    <div class="flex flex-col items-center">
+                        <span class="text-3xl font-black text-emerald-600 dark:text-emerald-400">{{ $counts['present'] ?? 0 }}</span>
+                        <span class="text-xs font-medium text-emerald-700 dark:text-emerald-300 mt-1">{{ __('Present') }}</span>
                     </div>
-                @endforeach
+                    <div class="absolute top-2 right-2 w-2 h-2 rounded-full bg-emerald-500"></div>
+                </div>
+                
+                {{-- Late - Orange/Amber --}}
+                <div class="relative group p-4 rounded-xl bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-900/30 dark:to-amber-900/30 border border-orange-200/50 dark:border-orange-700/30 hover:shadow-md transition-all">
+                    <div class="flex flex-col items-center">
+                        <span class="text-3xl font-black text-orange-600 dark:text-orange-400">{{ $counts['late'] ?? 0 }}</span>
+                        <span class="text-xs font-medium text-orange-700 dark:text-orange-300 mt-1">{{ __('Late') }}</span>
+                    </div>
+                    <div class="absolute top-2 right-2 w-2 h-2 rounded-full bg-orange-500"></div>
+                </div>
+                
+                {{-- Excused - Sky/Cyan --}}
+                <div class="relative group p-4 rounded-xl bg-gradient-to-br from-sky-50 to-cyan-50 dark:from-sky-900/30 dark:to-cyan-900/30 border border-sky-200/50 dark:border-sky-700/30 hover:shadow-md transition-all">
+                    <div class="flex flex-col items-center">
+                        <span class="text-3xl font-black text-sky-600 dark:text-sky-400">{{ $counts['excused'] ?? 0 }}</span>
+                        <span class="text-xs font-medium text-sky-700 dark:text-sky-300 mt-1">{{ __('Excused') }}</span>
+                    </div>
+                    <div class="absolute top-2 right-2 w-2 h-2 rounded-full bg-sky-500"></div>
+                </div>
+                
+                {{-- Sick - Violet/Fuchsia --}}
+                <div class="relative group p-4 rounded-xl bg-gradient-to-br from-violet-50 to-fuchsia-50 dark:from-violet-900/30 dark:to-fuchsia-900/30 border border-violet-200/50 dark:border-violet-700/30 hover:shadow-md transition-all">
+                    <div class="flex flex-col items-center">
+                        <span class="text-3xl font-black text-violet-600 dark:text-violet-400">{{ $counts['sick'] ?? 0 }}</span>
+                        <span class="text-xs font-medium text-violet-700 dark:text-violet-300 mt-1">{{ __('Sick') }}</span>
+                    </div>
+                    <div class="absolute top-2 right-2 w-2 h-2 rounded-full bg-violet-500"></div>
+                </div>
+                
+                {{-- Absent - Rose/Pink --}}
+                <div class="relative group p-4 rounded-xl bg-gradient-to-br from-rose-50 to-pink-50 dark:from-rose-900/30 dark:to-pink-900/30 border border-rose-200/50 dark:border-rose-700/30 hover:shadow-md transition-all col-span-2 sm:col-span-1">
+                    <div class="flex flex-col items-center">
+                        <span class="text-3xl font-black text-rose-600 dark:text-rose-400">{{ $counts['absent'] ?? 0 }}</span>
+                        <span class="text-xs font-medium text-rose-700 dark:text-rose-300 mt-1">{{ __('Absent') }}</span>
+                    </div>
+                    <div class="absolute top-2 right-2 w-2 h-2 rounded-full bg-rose-500"></div>
+                </div>
             </div>
         </div>
         
-        {{-- Legend --}}
-        <div class="px-4 sm:px-6 pb-4 sm:pb-6">
-            <div class="flex flex-wrap justify-center gap-4 text-xs text-gray-500 dark:text-gray-400">
-                <span class="flex items-center gap-1.5"><span class="h-2 w-2 rounded-full bg-yellow-400 ring-2 ring-yellow-200"></span> {{ __('Pending') }}</span>
-                <span class="flex items-center gap-1.5"><span class="h-2 w-2 rounded-full bg-red-600 ring-2 ring-red-200"></span> {{ __('Rejected') }}</span>
-                <span class="flex items-center gap-1.5">🎌 {{ __('Holiday') }}</span>
+        {{-- Legend Footer --}}
+        <div class="px-5 py-3 bg-white/50 dark:bg-gray-800/50 border-t border-gray-200/50 dark:border-gray-700/50">
+            <div class="flex flex-wrap justify-center gap-5 text-xs text-gray-600 dark:text-gray-400">
+                <span class="flex items-center gap-2">
+                    <span class="h-2.5 w-2.5 rounded-full bg-gradient-to-r from-yellow-400 to-amber-400 ring-2 ring-yellow-100 dark:ring-yellow-900"></span> 
+                    {{ __('Pending') }}
+                </span>
+                <span class="flex items-center gap-2">
+                    <span class="h-2.5 w-2.5 rounded-full bg-gradient-to-r from-red-500 to-rose-600 ring-2 ring-red-100 dark:ring-red-900"></span> 
+                    {{ __('Rejected') }}
+                </span>
+                <span class="flex items-center gap-2">
+                    🎌 {{ __('Holiday') }}
+                </span>
             </div>
         </div>
     </div>
