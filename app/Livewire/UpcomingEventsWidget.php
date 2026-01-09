@@ -31,8 +31,7 @@ class UpcomingEventsWidget extends Component
         // Logic handles separate month/year issues simply by checking month/day
         $nextWeek = $today->copy()->addDays(7);
         
-        $birthdays = User::where('is_active', true)
-            ->get()
+        $birthdays = User::get()
             ->filter(function ($user) use ($today, $nextWeek) {
                 if (!$user->birth_date) return false;
                 
