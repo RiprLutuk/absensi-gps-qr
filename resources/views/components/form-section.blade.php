@@ -2,24 +2,28 @@
 
 <div {{ $attributes->merge(['class' => '']) }}>
     <form wire:submit="{{ $submit }}">
-        <div class="bg-white dark:bg-gray-800 shadow-sm border border-gray-100 dark:border-gray-700 rounded-2xl transition-shadow hover:shadow-md duration-300">
+        <div class="rounded-2xl border border-indigo-100 bg-white shadow-xl shadow-indigo-100/50 dark:border-gray-700 dark:bg-gray-800 dark:shadow-none relative overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-indigo-200/50">
+            
+            {{-- Decorative Background Blob --}}
+            <div class="absolute top-0 right-0 -mt-10 -mr-10 w-32 h-32 bg-indigo-50 dark:bg-indigo-900/20 rounded-full blur-3xl opacity-50 pointer-events-none"></div>
+
             <!-- Card Header -->
-            <div class="px-6 py-5 border-b border-gray-100 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/50 rounded-t-2xl">
+            <div class="relative z-10 px-6 py-5 border-b border-indigo-50 dark:border-gray-700/50 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-t-2xl">
                 <div class="flex items-center gap-3">
                     @if (isset($icon))
-                        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-100 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400">
+                        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-50 to-white border border-indigo-100 text-indigo-600 dark:from-indigo-900/50 dark:to-gray-800 dark:border-indigo-700/50 dark:text-indigo-400 shadow-sm">
                             {{ $icon }}
                         </div>
                     @endif
                     <div>
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ $title }}</h3>
-                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{{ $description }}</p>
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white">{{ $title }}</h3>
+                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">{{ $description }}</p>
                     </div>
                 </div>
             </div>
 
             <!-- Card Body -->
-            <div class="px-6 py-6">
+            <div class="relative z-10 px-6 py-6 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm">
                 <div class="grid grid-cols-6 gap-6">
                     {{ $form }}
                 </div>
@@ -27,7 +31,7 @@
 
             <!-- Card Footer -->
             @if (isset($actions))
-                <div class="flex items-center justify-end px-6 py-4 bg-gray-50 dark:bg-gray-700/30 border-t border-gray-100 dark:border-gray-700 rounded-b-2xl">
+                <div class="relative z-10 flex items-center justify-end px-6 py-4 bg-gray-50/50 dark:bg-gray-700/30 border-t border-indigo-50 dark:border-gray-700/50 rounded-b-2xl backdrop-blur-sm">
                     {{ $actions }}
                 </div>
             @endif
