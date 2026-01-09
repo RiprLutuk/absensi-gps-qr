@@ -345,7 +345,7 @@
                         ])
                     </div>
 
-                    @include('components.action-buttons')
+                    {{-- Action Buttons (Removed) --}}
                 </div>
             </div>
         @endif
