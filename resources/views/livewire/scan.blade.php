@@ -76,11 +76,23 @@
                     </div>
                     @endif
 
-                    {{-- Compact Status Grid --}}
+                    {{-- Compact Status Grid with Integrated Location --}}
                     <div class="grid grid-cols-2 gap-3">
                         {{-- Check In Status --}}
                         <div class="flex flex-col p-3 rounded-xl {{ $hasCheckedIn ? 'bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800' : 'bg-gray-50 dark:bg-gray-700/30 border border-gray-100 dark:border-gray-700 border-dashed' }}">
-                            <span class="text-xs text-gray-500 dark:text-gray-400 mb-1">{{ __('Check In') }}</span>
+                            <div class="flex justify-between items-start mb-1">
+                                <span class="text-xs text-gray-500 dark:text-gray-400">{{ __('Absen Masuk') }}</span>
+                                @if($hasCheckedIn && $attendance->latitude_in)
+                                     <button onclick="toggleMap('checkInMapCompact')" id="toggle-checkInMapCompact-btn" class="text-[10px] flex items-center gap-1 text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/40 px-2 py-0.5 rounded-full hover:bg-blue-200 transition">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        </svg>
+                                        <span class="font-medium">Lokasi</span>
+                                    </button>
+                                @endif
+                            </div>
+                            
                             @if($hasCheckedIn)
                                 <span class="text-base font-bold text-blue-700 dark:text-blue-300">
                                     {{ \App\Helpers::format_time($attendance->time_in) }}
@@ -92,7 +104,19 @@
 
                          {{-- Check Out Status --}}
                         <div class="flex flex-col p-3 rounded-xl {{ $hasCheckedOut ? 'bg-orange-50 dark:bg-orange-900/20 border border-orange-100 dark:border-orange-800' : 'bg-gray-50 dark:bg-gray-700/30 border border-gray-100 dark:border-gray-700 border-dashed' }}">
-                            <span class="text-xs text-gray-500 dark:text-gray-400 mb-1">{{ __('Check Out') }}</span>
+                            <div class="flex justify-between items-start mb-1">
+                                <span class="text-xs text-gray-500 dark:text-gray-400">{{ __('Absen Keluar') }}</span>
+                                @if($hasCheckedOut && $attendance->latitude_out)
+                                    <button onclick="toggleMap('checkOutMapCompact')" id="toggle-checkOutMapCompact-btn" class="text-[10px] flex items-center gap-1 text-orange-600 dark:text-orange-400 bg-orange-100 dark:bg-orange-900/40 px-2 py-0.5 rounded-full hover:bg-orange-200 transition">
+                                         <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        </svg>
+                                        <span class="font-medium">Lokasi</span>
+                                    </button>
+                                @endif
+                            </div>
+
                             @if($hasCheckedOut)
                                 <span class="text-base font-bold text-orange-700 dark:text-orange-300">
                                     {{ \App\Helpers::format_time($attendance->time_out) }}
@@ -102,6 +126,55 @@
                             @endif
                         </div>
                     </div>
+
+                    {{-- Collapsible Maps Container (Hidden by default) --}}
+                    @if($hasCheckedIn)
+                        <div id="checkInMapCompact" class="hidden mt-4 rounded-xl overflow-hidden border border-blue-100 dark:border-blue-900 shadow-inner relative transition-all duration-300 ease-in-out">
+                             <div class="absolute top-2 left-2 z-[400] bg-white/90 dark:bg-gray-800/90 px-2 py-1 rounded text-xs font-bold text-blue-600 shadow-sm border border-blue-100">
+                                📍 Lokasi Check In
+                            </div>
+                             <div class="map-container h-48 w-full" id="map-in-container" data-lat="{{ $attendance->latitude_in }}" data-lng="{{ $attendance->longitude_in }}"></div>
+                        </div>
+                    @endif
+
+                    @if($hasCheckedOut)
+                        <div id="checkOutMapCompact" class="hidden mt-4 rounded-xl overflow-hidden border border-orange-100 dark:border-orange-900 shadow-inner relative transition-all duration-300 ease-in-out">
+                            <div class="absolute top-2 left-2 z-[400] bg-white/90 dark:bg-gray-800/90 px-2 py-1 rounded text-xs font-bold text-orange-600 shadow-sm border border-orange-100">
+                                📍 Lokasi Check Out
+                            </div>
+                             <div class="map-container h-48 w-full" id="map-out-container" data-lat="{{ $attendance->latitude_out }}" data-lng="{{ $attendance->longitude_out }}"></div>
+                        </div>
+                    @endif
+
+                    <script>
+                        function toggleMap(mapId) {
+                            const mapEl = document.getElementById(mapId);
+                            if (mapEl.classList.contains('hidden')) {
+                                mapEl.classList.remove('hidden');
+                                // Initialize map if needed
+                                // Assuming we have a global map init function or we can utilize window.openMap logic but distinct
+                                // For simplicity, let's just use the existing openMap logic or recreate it for inline
+                                const containerId = mapId === 'checkInMapCompact' ? 'map-in-container' : 'map-out-container';
+                                const container = document.getElementById(containerId);
+                                const lat = container.dataset.lat;
+                                const lng = container.dataset.lng;
+                                
+                                if (!container._leaflet_id) { // Only init if not already
+                                     setTimeout(() => {
+                                        const map = L.map(containerId).setView([lat, lng], 15);
+                                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                            attribution: '© OpenStreetMap contributors'
+                                        }).addTo(map);
+                                        L.marker([lat, lng]).addTo(map);
+                                         // Fix resize issue
+                                        map.invalidateSize();
+                                     }, 100);
+                                }
+                            } else {
+                                mapEl.classList.add('hidden');
+                            }
+                        }
+                    </script>
                 </div>
             </div>
         </div>
@@ -126,30 +199,8 @@
 
                 {{-- Summary Cards (Removed - Moved to Header) --}}
 
-                {{-- Location History Cards --}}
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
-                    {{-- Check In Location --}}
-                    @include('components.location-card', [
-                        'title' => __('Check In Location'),
-                        'mapId' => 'checkInMap',
-                        'latitude' => $attendance?->latitude_in,
-                        'longitude' => $attendance?->longitude_in,
-                        'icon' =>
-                            'M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1',
-                        'iconColor' => 'blue',
-                    ])
+                {{-- Location History Cards (Removed - Integrated into Header) --}}
 
-                    {{-- Check Out Location --}}
-                    @include('components.location-card', [
-                        'title' => __('Check Out Location'),
-                        'mapId' => 'checkOutMap',
-                        'latitude' => $attendance?->latitude_out,
-                        'longitude' => $attendance?->longitude_out,
-                        'icon' =>
-                            'M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1',
-                        'iconColor' => 'orange',
-                    ])
-                </div>
 
                 {{-- Action Buttons --}}
                 @include('components.action-buttons')
