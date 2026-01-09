@@ -16,6 +16,23 @@
                             Kembali
                         </x-secondary-button>
                     </div>
+                    
+                    {{-- Leave Quota Summary --}}
+                    <div class="mb-6 grid grid-cols-2 gap-4">
+                        <div class="p-4 rounded-xl bg-gradient-to-br from-sky-50 to-cyan-50 dark:from-sky-900/30 dark:to-cyan-900/30 border border-sky-200/50 dark:border-sky-700/30">
+                            <div class="text-center">
+                                <p class="text-xs font-medium text-sky-600 dark:text-sky-400 uppercase tracking-wider">{{ __('Sisa Cuti Tahunan') }}</p>
+                                <p class="text-2xl font-bold text-sky-700 dark:text-sky-300 mt-1">{{ $remainingExcused ?? 0 }}<span class="text-sm font-normal text-sky-500">/{{ $annualQuota ?? 12 }}</span></p>
+                            </div>
+                        </div>
+                        <div class="p-4 rounded-xl bg-gradient-to-br from-violet-50 to-fuchsia-50 dark:from-violet-900/30 dark:to-fuchsia-900/30 border border-violet-200/50 dark:border-violet-700/30">
+                            <div class="text-center">
+                                <p class="text-xs font-medium text-violet-600 dark:text-violet-400 uppercase tracking-wider">{{ __('Sisa Jatah Sakit') }}</p>
+                                <p class="text-2xl font-bold text-violet-700 dark:text-violet-300 mt-1">{{ $remainingSick ?? 0 }}<span class="text-sm font-normal text-violet-500">/{{ $sickQuota ?? 14 }}</span></p>
+                            </div>
+                        </div>
+                    </div>
+                    
                     @if ($attendance && ($attendance->time_in || $attendance->time_out))
                         {{-- Warning jika sudah clock in/out hari ini --}}
                         <div
@@ -88,7 +105,14 @@
                         </div>
 
                         <div class="mb-4">
-                            <x-label for="attachment" value="Lampiran (Opsional)" />
+                            <x-label for="attachment">
+                                {{ __('Lampiran') }}
+                                @if($requireAttachment ?? false)
+                                    <span class="text-red-500">*</span>
+                                @else
+                                    <span class="text-gray-400">({{ __('Opsional') }})</span>
+                                @endif
+                            </x-label>
                             <input type="file" name="attachment" id="attachment"
                                 class="mt-1 block w-full text-sm text-gray-500 dark:text-gray-400
                                     file:mr-4 file:py-2 file:px-4
@@ -97,9 +121,15 @@
                                     file:bg-indigo-50 file:text-indigo-700
                                     hover:file:bg-indigo-100
                                     dark:file:bg-indigo-900 dark:file:text-indigo-300"
-                                accept="image/*,application/pdf" />
+                                accept="image/*,application/pdf"
+                                {{ ($requireAttachment ?? false) ? 'required' : '' }} />
                             <x-input-error for="attachment" class="mt-2" />
-                            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Max 3MB (Gambar atau PDF)</p>
+                            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                                Max 3MB (Gambar atau PDF)
+                                @if($requireAttachment ?? false)
+                                    - <span class="text-red-500 font-medium">{{ __('Wajib dilampirkan') }}</span>
+                                @endif
+                            </p>
                         </div>
 
                         <input type="hidden" name="lat" id="lat" />

@@ -11,21 +11,52 @@ class UserAttendanceController extends Controller
 {
     public function applyLeave()
     {
-        $attendance = Attendance::where('user_id', Auth::user()->id)
+        $user = Auth::user();
+        $attendance = Attendance::where('user_id', $user->id)
             ->where('date', date('Y-m-d'))
             ->first();
 
-        return view('attendances.apply-leave', ['attendance' => $attendance]);
+        // Get leave quotas from settings
+        $annualQuota = (int) \App\Models\Setting::getValue('leave.annual_quota', 12);
+        $sickQuota = (int) \App\Models\Setting::getValue('leave.sick_quota', 14);
+        $requireAttachment = \App\Models\Setting::getValue('leave.require_attachment', '1') === '1';
+
+        // Calculate used leaves this year
+        $currentYear = now()->year;
+        $usedExcused = Attendance::where('user_id', $user->id)
+            ->whereYear('date', $currentYear)
+            ->where('status', 'excused')
+            ->whereIn('approval_status', ['approved', 'pending'])
+            ->count();
+        $usedSick = Attendance::where('user_id', $user->id)
+            ->whereYear('date', $currentYear)
+            ->where('status', 'sick')
+            ->whereIn('approval_status', ['approved', 'pending'])
+            ->count();
+
+        return view('attendances.apply-leave', [
+            'attendance' => $attendance,
+            'annualQuota' => $annualQuota,
+            'sickQuota' => $sickQuota,
+            'usedExcused' => $usedExcused,
+            'usedSick' => $usedSick,
+            'remainingExcused' => max(0, $annualQuota - $usedExcused),
+            'remainingSick' => max(0, $sickQuota - $usedSick),
+            'requireAttachment' => $requireAttachment,
+        ]);
     }
 
     public function storeLeaveRequest(Request $request)
     {
+        // Check if attachment is required from settings
+        $requireAttachment = \App\Models\Setting::getValue('leave.require_attachment', '1') === '1';
+        
         $request->validate([
             'status' => ['required', 'in:excused,sick'],
             'note' => ['required', 'string', 'max:255'],
             'from' => ['required', 'date'],
             'to' => ['nullable', 'date', 'after_or_equal:from'],
-            'attachment' => ['nullable', 'file', 'max:3072'],
+            'attachment' => [$requireAttachment ? 'required' : 'nullable', 'file', 'max:3072'],
             'lat' => ['nullable', 'numeric'],
             'lng' => ['nullable', 'numeric'],
         ]);
