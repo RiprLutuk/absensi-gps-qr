@@ -48,10 +48,15 @@
                         $isToday = $date->isToday();
                         $isWeekend = $date->isWeekend();
                         
+                        // Check if this date is a holiday
+                        $dateKey = $date->format('Y-m-d');
+                        $holiday = $holidays[$dateKey] ?? null;
+                        $isHoliday = !is_null($holiday);
+                        
                         // Find attendance
                         $attendance = $attendances->firstWhere(fn($v, $k) => $v->date->isSameDay($date));
                         $status = ($attendance ?? [
-                            'status' => $isWeekend || !$date->isPast() ? '-' : 'absent',
+                            'status' => $isWeekend || $isHoliday || !$date->isPast() ? '-' : 'absent',
                         ])['status'];
 
                         // Styles
@@ -59,8 +64,16 @@
                         $textClass = $isCurrentMonth ? 'text-gray-900 dark:text-white' : 'text-gray-400 dark:text-gray-600';
                         $borderClass = $isToday ? 'ring-2 ring-blue-500 z-10' : 'border border-gray-100 dark:border-gray-700';
                         
-                        if ($date->isSunday() && $isCurrentMonth) $textClass = 'text-red-500 dark:text-red-400 shadow-red-50';
-                        if ($date->isFriday() && $isCurrentMonth) $textClass = 'text-green-600 dark:text-green-400';
+                        // Holiday styling (priority over weekend)
+                        if ($isHoliday && $isCurrentMonth) {
+                            $bgClass = 'bg-rose-50 dark:bg-rose-900/20';
+                            $textClass = 'text-rose-600 dark:text-rose-400';
+                            $borderClass = $isToday ? 'ring-2 ring-blue-500 z-10' : 'border border-rose-200 dark:border-rose-700';
+                        } elseif ($date->isSunday() && $isCurrentMonth) {
+                            $textClass = 'text-red-500 dark:text-red-400 shadow-red-50';
+                        } elseif ($date->isFriday() && $isCurrentMonth) {
+                            $textClass = 'text-green-600 dark:text-green-400';
+                        }
 
                         // Status Marker
                         $markerColor = match($status) {
@@ -80,6 +93,11 @@
                         <button type="button"
                             @if($attendance) wire:click="show({{ $attendance['id'] }})" @endif
                             class="w-full h-full flex flex-col items-center justify-between p-1 sm:p-2 rounded-lg transition-all duration-200 {{ $bgClass }} {{ $textClass }} {{ $borderClass }} hover:bg-gray-50 dark:hover:bg-gray-700/50 {{ $attendance ? 'cursor-pointer hover:shadow-md' : 'cursor-default' }}">
+                            
+                            {{-- Holiday Indicator --}}
+                            @if($isHoliday && $isCurrentMonth)
+                                <span class="absolute top-0.5 right-0.5 text-[8px] sm:text-[10px]" title="{{ $holiday->name }}">🎌</span>
+                            @endif
                             
                             {{-- Date Number --}}
                             <span class="text-xs sm:text-sm font-medium {{ !$isCurrentMonth ? 'opacity-50' : '' }}">

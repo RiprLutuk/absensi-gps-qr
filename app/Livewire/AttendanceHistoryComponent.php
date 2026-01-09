@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Livewire\Traits\AttendanceDetailTrait;
 use App\Models\Attendance;
+use App\Models\Holiday;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
@@ -94,11 +95,27 @@ class AttendanceHistoryComponent extends Component
         
         $attendanceToday = $attendances->firstWhere(fn($v, $_) => $v['date'] === Carbon::now()->format('Y-m-d'));
         
+        // Get holidays for this month (including recurring)
+        $holidays = Holiday::where(function ($query) use ($startOfMonth, $endOfMonth) {
+            $query->whereBetween('date', [$startOfMonth, $endOfMonth])
+                ->orWhere(function ($q) use ($startOfMonth, $endOfMonth) {
+                    $q->where('is_recurring', true)
+                        ->whereRaw('MONTH(date) = ?', [$startOfMonth->month]);
+                });
+        })->get()->keyBy(function ($holiday) use ($startOfMonth) {
+            // For recurring holidays, use current year's date as key
+            if ($holiday->is_recurring) {
+                return $startOfMonth->year . '-' . $holiday->date->format('m-d');
+            }
+            return $holiday->date->format('Y-m-d');
+        });
+        
         return view('livewire.attendance-history', [
             'attendances' => $attendances,
             'attendanceToday' => $attendanceToday,
             'dates' => $dates,
             'currentMonth' => $date->month,
+            'holidays' => $holidays,
             'counts' => [
                 'present' => $presentCount,
                 'late' => $lateCount,
