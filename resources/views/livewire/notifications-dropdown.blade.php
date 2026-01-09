@@ -20,7 +20,7 @@
         x-transition:leave="transition ease-in duration-75"
         x-transition:leave-start="transform opacity-100 scale-100"
         x-transition:leave-end="transform opacity-0 scale-95"
-        class="absolute right-0 z-50 mt-2 w-80 origin-top-right rounded-xl bg-white dark:bg-gray-800 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+        class="fixed inset-x-4 top-16 mt-2 z-50 w-auto origin-top rounded-xl bg-white dark:bg-gray-800 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:absolute sm:right-0 sm:inset-x-auto sm:top-full sm:mt-2 sm:w-80 sm:origin-top-right"
         style="display: none;">
         
         <div class="px-4 py-3 border-b border-gray-100 dark:border-gray-700">
