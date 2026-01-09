@@ -689,5 +689,11 @@
     "This Month": "Bulan Ini",
     "days": "hari",
     "History": "Riwayat",
-    "Schedule": "Jadwal"
+    "Schedule": "Jadwal",
+    "Check In": "Absen Masuk",
+    "Check Out": "Absen Keluar",
+    "Completed": "Selesai",
+    "Location": "Lokasi",
+    "Check In Location": "Lokasi Masuk",
+    "Check Out Location": "Lokasi Keluar"
 }

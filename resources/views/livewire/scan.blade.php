@@ -43,8 +43,7 @@
                             </h3>
                         </div>
                          @if ($isComplete)
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-                                {{ __('Selesai') }}
+                                {{ __('Completed') }}
                             </span>
                         @else
                             <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
@@ -86,14 +85,14 @@
                         {{-- Check In Status --}}
                         <div class="flex flex-col p-3 rounded-xl {{ $hasCheckedIn ? 'bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800' : 'bg-gray-50 dark:bg-gray-700/30 border border-gray-100 dark:border-gray-700 border-dashed' }}">
                             <div class="flex justify-between items-start mb-1">
-                                <span class="text-xs text-gray-500 dark:text-gray-400">{{ __('Absen Masuk') }}</span>
+                                <span class="text-xs text-gray-500 dark:text-gray-400">{{ __('Check In') }}</span>
                                 @if($hasCheckedIn && $attendance->latitude_in)
                                      <button onclick="toggleMap('checkInMapCompact')" id="toggle-checkInMapCompact-btn" class="text-[10px] flex items-center gap-1 text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/40 px-2 py-0.5 rounded-full hover:bg-blue-200 transition">
                                         <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                         </svg>
-                                        <span class="font-medium">Lokasi</span>
+                                        <span class="font-medium">{{ __('Location') }}</span>
                                     </button>
                                 @endif
                             </div>
@@ -110,14 +109,14 @@
                          {{-- Check Out Status --}}
                         <div class="flex flex-col p-3 rounded-xl {{ $hasCheckedOut ? 'bg-orange-50 dark:bg-orange-900/20 border border-orange-100 dark:border-orange-800' : 'bg-gray-50 dark:bg-gray-700/30 border border-gray-100 dark:border-gray-700 border-dashed' }}">
                             <div class="flex justify-between items-start mb-1">
-                                <span class="text-xs text-gray-500 dark:text-gray-400">{{ __('Absen Keluar') }}</span>
+                                <span class="text-xs text-gray-500 dark:text-gray-400">{{ __('Check Out') }}</span>
                                 @if($hasCheckedOut && $attendance->latitude_out)
                                     <button onclick="toggleMap('checkOutMapCompact')" id="toggle-checkOutMapCompact-btn" class="text-[10px] flex items-center gap-1 text-orange-600 dark:text-orange-400 bg-orange-100 dark:bg-orange-900/40 px-2 py-0.5 rounded-full hover:bg-orange-200 transition">
                                          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                         </svg>
-                                        <span class="font-medium">Lokasi</span>
+                                        <span class="font-medium">{{ __('Location') }}</span>
                                     </button>
                                 @endif
                             </div>
@@ -136,7 +135,7 @@
                     @if($hasCheckedIn)
                         <div id="checkInMapCompact" class="hidden mt-4 rounded-xl overflow-hidden border border-blue-100 dark:border-blue-900 shadow-inner relative transition-all duration-300 ease-in-out">
                              <div class="absolute top-2 left-2 z-[400] bg-white/90 dark:bg-gray-800/90 px-2 py-1 rounded text-xs font-bold text-blue-600 shadow-sm border border-blue-100">
-                                📍 Lokasi Check In
+                                {{ __('Check In Location') }}
                             </div>
                              <div class="map-container h-48 w-full" id="map-in-container" data-lat="{{ $attendance->latitude_in }}" data-lng="{{ $attendance->longitude_in }}"></div>
                         </div>
@@ -145,7 +144,7 @@
                     @if($hasCheckedOut)
                         <div id="checkOutMapCompact" class="hidden mt-4 rounded-xl overflow-hidden border border-orange-100 dark:border-orange-900 shadow-inner relative transition-all duration-300 ease-in-out">
                             <div class="absolute top-2 left-2 z-[400] bg-white/90 dark:bg-gray-800/90 px-2 py-1 rounded text-xs font-bold text-orange-600 shadow-sm border border-orange-100">
-                                📍 Lokasi Check Out
+                                {{ __('Check Out Location') }}
                             </div>
                              <div class="map-container h-48 w-full" id="map-out-container" data-lat="{{ $attendance->latitude_out }}" data-lng="{{ $attendance->longitude_out }}"></div>
                         </div>
