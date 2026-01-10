@@ -62,6 +62,11 @@ class LeaveRequested extends Notification implements ShouldQueue
         }
         
         return (new MailMessage)
+            ->from(config('mail.from.address'), \App\Models\Setting::getValue('mail.from_name', config('app.name')))
+            ->replyTo(
+                \App\Models\Setting::getValue('mail.reply_to_address', $supportEmail),
+                \App\Models\Setting::getValue('mail.reply_to_name', config('app.name'))
+            )
             ->subject('Sistem' . " - " . __('New Leave Request') . ": $userName")
             ->view('emails.leave-requested', [
                 'userName' => $userName,

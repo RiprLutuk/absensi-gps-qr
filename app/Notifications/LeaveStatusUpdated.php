@@ -29,6 +29,11 @@ class LeaveStatusUpdated extends Notification implements ShouldQueue
         $emoji = $this->attendance->approval_status === 'approved' ? '✅' : '❌';
 
         return (new MailMessage)
+            ->from(config('mail.from.address'), \App\Models\Setting::getValue('mail.from_name', config('app.name')))
+            ->replyTo(
+                \App\Models\Setting::getValue('mail.reply_to_address', config('mail.from.address')),
+                \App\Models\Setting::getValue('mail.reply_to_name', config('app.name'))
+            )
             ->subject("{$emoji} Leave Request {$status}")
             ->greeting("Hello, {$notifiable->name}!")
             ->line("Your leave request for **{$this->attendance->date->format('d M Y')}** has been **{$status}**.")

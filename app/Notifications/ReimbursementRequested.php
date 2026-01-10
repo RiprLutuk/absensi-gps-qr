@@ -41,6 +41,11 @@ class ReimbursementRequested extends Notification implements ShouldQueue
         $appName = \App\Models\Setting::getValue('app.name', config('app.name', 'PasPapan'));
         
         return (new MailMessage)
+            ->from(config('mail.from.address'), \App\Models\Setting::getValue('mail.from_name', $appName))
+            ->replyTo(
+                \App\Models\Setting::getValue('mail.reply_to_address', config('mail.from.address')),
+                \App\Models\Setting::getValue('mail.reply_to_name', $appName)
+            )
             ->subject('Sistem' . " - " . __('New Reimbursement Request') . ": $userName")
             ->greeting("Hello, Admin!")
             ->line("User **{$userName}** has submitted a new reimbursement request.")

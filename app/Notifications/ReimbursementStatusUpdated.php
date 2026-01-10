@@ -31,6 +31,11 @@ class ReimbursementStatusUpdated extends Notification implements ShouldQueue
         $emoji = $this->reimbursement->status === 'approved' ? '✅' : '❌';
 
         return (new MailMessage)
+            ->from(config('mail.from.address'), \App\Models\Setting::getValue('mail.from_name', config('app.name')))
+            ->replyTo(
+                \App\Models\Setting::getValue('mail.reply_to_address', config('mail.from.address')),
+                \App\Models\Setting::getValue('mail.reply_to_name', config('app.name'))
+            )
             ->subject("{$emoji} Reimbursement {$status}: {$this->reimbursement->type}")
             ->greeting("Hello, {$notifiable->name}!")
             ->line("Your reimbursement request for **{$this->reimbursement->type}** submitted on {$this->reimbursement->date->format('d M Y')} has been **{$status}**.")

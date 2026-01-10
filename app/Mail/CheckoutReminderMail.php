@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class CheckoutReminderMail extends Mailable
+class CheckoutReminderMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
@@ -29,7 +29,17 @@ class CheckoutReminderMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Checkout Reminder - Absensi GPS',
+            from: new \Illuminate\Mail\Mailables\Address(
+                config('mail.from.address'), 
+                \App\Models\Setting::getValue('mail.from_name', config('app.name'))
+            ),
+            replyTo: [
+                new \Illuminate\Mail\Mailables\Address(
+                    \App\Models\Setting::getValue('mail.reply_to_address', config('mail.from.address')),
+                    \App\Models\Setting::getValue('mail.reply_to_name', config('app.name'))
+                )
+            ],
+            subject: 'Sistem - Checkout Reminder',
         );
     }
 
