@@ -27,7 +27,7 @@
     </div>
 
     <!-- Talenta-Style Summary Cards -->
-    <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div wire:poll.15s class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <!-- 1. Staff Overview -->
         <div class="relative overflow-hidden rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-950/5 dark:bg-gray-800 dark:ring-white/10">
             <dt class="truncate text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('Total Employees') }}</dt>
@@ -39,11 +39,13 @@
                 <svg class="h-4 w-4 flex-none" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-11.25a.75.75 0 00-1.5 0v2.5h-2.5a.75.75 0 000 1.5h2.5v2.5a.75.75 0 001.5 0v-2.5h2.5a.75.75 0 000-1.5h-2.5v-2.5z" clip-rule="evenodd" />
                 </svg>
-                <span class="font-medium">{{ $presentCount }} {{ __('Present Today') }}</span>
+                <div class="cursor-pointer hover:underline" wire:click="showStatDetail('present')">
+                    <span class="font-medium">{{ $presentCount }} {{ __('Present Today') }}</span>
+                </div>
             </div>
             
             <!-- Quick Link to Employees -->
-            <a href="{{ route('admin.employees') }}" class="absolute inset-0"></a>
+            <!-- Removed absolute link effectively to allow clicking on details -->
         </div>
 
         <!-- 2. Action Center (Pending Tasks) -->
@@ -79,20 +81,20 @@
             <dt class="truncate text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('Attendance Health') }}</dt>
             <div class="mt-4 grid grid-cols-2 gap-4">
                 <!-- Present -->
-                <div class="flex flex-col rounded-xl bg-green-50 p-3 dark:bg-green-900/20">
+                <button wire:click="showStatDetail('present')" class="flex flex-col text-left rounded-xl bg-green-50 p-3 hover:bg-green-100 transition-colors dark:bg-green-900/20 dark:hover:bg-green-900/40">
                     <span class="text-xs font-medium text-green-600 dark:text-green-400">{{ __('Present') }}</span>
                     <span class="text-2xl font-bold text-green-700 dark:text-green-300">{{ $presentCount }}</span>
-                </div>
+                </button>
                 <!-- Late -->
-                <div class="flex flex-col rounded-xl bg-amber-50 p-3 dark:bg-amber-900/20">
+                <button wire:click="showStatDetail('late')" class="flex flex-col text-left rounded-xl bg-amber-50 p-3 hover:bg-amber-100 transition-colors dark:bg-amber-900/20 dark:hover:bg-amber-900/40">
                     <span class="text-xs font-medium text-amber-600 dark:text-amber-400">{{ __('Late') }}</span>
                     <span class="text-2xl font-bold text-amber-700 dark:text-amber-300">{{ $lateCount }}</span>
-                </div>
+                </button>
                 <!-- Absent/Sick -->
-                <div class="col-span-2 flex items-center justify-between rounded-xl bg-gray-50 px-3 py-2 dark:bg-gray-700/30">
+                <button wire:click="showStatDetail('absent')" class="col-span-2 flex items-center justify-between text-left rounded-xl bg-gray-50 px-3 py-2 hover:bg-gray-100 transition-colors dark:bg-gray-700/30 dark:hover:bg-gray-700/50">
                      <span class="text-xs font-medium text-gray-500 dark:text-gray-400">{{ __('Absent / Sick / Leave') }}</span>
                      <span class="font-semibold text-gray-700 dark:text-gray-200">{{ $absentCount + $sickCount + $excusedCount }}</span>
-                </div>
+                </button>
             </div>
         </div>
     </div>
@@ -105,18 +107,19 @@
              x-data="weeklyAttendanceChart()"
              x-init="initChart()">
             <div class="flex items-center justify-between mb-4">
-                <h3 class="text-base font-semibold text-gray-900 dark:text-white">{{ __('Weekly Attendance Trends') }}</h3>
-                <select class="text-xs border-0 bg-gray-50 rounded-lg text-gray-500 focus:ring-0 dark:bg-gray-700 dark:text-gray-400">
-                    <option>{{ __('Last 7 Days') }}</option>
+                <h3 class="text-base font-semibold text-gray-900 dark:text-white">{{ __('Attendance Trends') }}</h3>
+                <select wire:model.live="chartFilter" class="text-xs border-0 bg-gray-50 rounded-lg text-gray-500 focus:ring-0 dark:bg-gray-700 dark:text-gray-400">
+                    <option value="week">{{ __('Last 7 Days') }}</option>
+                    <option value="month">{{ __('Last 30 Days') }}</option>
                 </select>
             </div>
             <div class="relative w-full flex-1 min-h-[300px]">
                 <canvas x-ref="canvas"></canvas>
             </div>
         </div>
-
+        
         {{-- Live Feed / Recent Activity (1 column) --}}
-        <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-950/5 dark:bg-gray-800 dark:ring-white/10">
+        <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-950/5 dark:bg-gray-800 dark:ring-white/10" wire:poll.10s>
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-base font-semibold text-gray-900 dark:text-white">{{ __('Live Feed') }}</h3>
                 <a href="{{ route('admin.activity-logs.export') }}" target="_system" 
@@ -222,7 +225,19 @@
         <div class="mb-4 flex items-center justify-between">
             <h3 class="text-base font-semibold text-gray-900 dark:text-white">{{ __('Employee Attendance') }}</h3>
             <div class="flex gap-2">
-                 <x-text-input type="text" placeholder="{{ __('Search...') }}" class="py-1 text-sm" />
+                 {{-- Search Input (Visual Only for now, or wire:model if we add a search property) --}}
+                 <div class="relative">
+                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                        <svg class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </div>
+                    <input type="text" 
+                           wire:model.live.debounce.300ms="search"
+                           placeholder="{{ __('Search...') }}" 
+                           class="block w-full rounded-lg border-gray-300 pl-10 text-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                    >
+                 </div>
             </div>
         </div>
 
