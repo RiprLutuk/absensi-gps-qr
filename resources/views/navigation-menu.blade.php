@@ -268,9 +268,17 @@
 
                 <x-theme-toggle id="theme-switcher-mobile" class="sm:hidden" />
 
-                <!-- Hamburger (Removed) -->
-                <div class="-me-2 flex items-center sm:hidden hidden">
-                </div>
+                <!-- Hamburger -->
+                @if(Auth::user()->isAdmin)
+                    <div class="-me-2 flex items-center sm:hidden">
+                        <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out dark:text-gray-500 dark:hover:text-gray-400 dark:hover:bg-gray-900 dark:focus:bg-gray-900 dark:focus:text-gray-400">
+                            <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                                <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                                <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                @endif
             </div>
         </div>
     </div>
@@ -285,75 +293,96 @@
                 </x-responsive-nav-link>
 
                 {{-- 2. Attendance Group --}}
-                <div class="block px-4 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                    {{ __('Attendance') }}
+                <div x-data="{ expanded: false }" class="border-t border-gray-100 dark:border-gray-700/50">
+                    <button @click="expanded = !expanded" class="flex w-full items-center justify-between px-4 py-3 text-left text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                        <span>{{ __('Attendance') }}</span>
+                        <svg class="h-4 w-4 transform transition-transform duration-200" :class="{'rotate-180': expanded}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div x-show="expanded" style="display: none;" class="bg-gray-50/50 dark:bg-black/20 pb-2">
+                        <x-responsive-nav-link href="{{ route('admin.attendances') }}" :active="request()->routeIs('admin.attendances')" wire:navigate>
+                            {{ __('Daily Attendance') }}
+                        </x-responsive-nav-link>
+                        <x-responsive-nav-link href="{{ route('admin.leaves') }}" :active="request()->routeIs('admin.leaves')" wire:navigate>
+                            {{ __('Approvals') }}
+                        </x-responsive-nav-link>
+                        <x-responsive-nav-link href="{{ route('admin.reimbursements') }}" :active="request()->routeIs('admin.reimbursements')" wire:navigate>
+                            {{ __('Reimbursements') }}
+                        </x-responsive-nav-link>
+                        <x-responsive-nav-link href="{{ route('admin.schedules') }}" :active="request()->routeIs('admin.schedules')" wire:navigate>
+                            {{ __('Schedules (Roster)') }}
+                        </x-responsive-nav-link>
+                        <x-responsive-nav-link href="{{ route('admin.analytics') }}" :active="request()->routeIs('admin.analytics')" wire:navigate>
+                            {{ __('Analytics') }}
+                        </x-responsive-nav-link>
+                        <x-responsive-nav-link href="{{ route('admin.holidays') }}" :active="request()->routeIs('admin.holidays')" wire:navigate>
+                            🗓️ {{ __('Holidays') }}
+                        </x-responsive-nav-link>
+                        <x-responsive-nav-link href="{{ route('admin.announcements') }}" :active="request()->routeIs('admin.announcements')" wire:navigate>
+                            📢 {{ __('Announcements') }}
+                        </x-responsive-nav-link>
+                    </div>
                 </div>
-                <x-responsive-nav-link href="{{ route('admin.attendances') }}" :active="request()->routeIs('admin.attendances')" wire:navigate>
-                    {{ __('Daily Attendance') }}
-                </x-responsive-nav-link>
-                <x-responsive-nav-link href="{{ route('admin.leaves') }}" :active="request()->routeIs('admin.leaves')" wire:navigate>
-                    {{ __('Approvals') }}
-                </x-responsive-nav-link>
-                <x-responsive-nav-link href="{{ route('admin.reimbursements') }}" :active="request()->routeIs('admin.reimbursements')" wire:navigate>
-                    {{ __('Reimbursements') }}
-                </x-responsive-nav-link>
-                <x-responsive-nav-link href="{{ route('admin.schedules') }}" :active="request()->routeIs('admin.schedules')" wire:navigate>
-                    {{ __('Schedules (Roster)') }}
-                </x-responsive-nav-link>
-                <x-responsive-nav-link href="{{ route('admin.analytics') }}" :active="request()->routeIs('admin.analytics')" wire:navigate>
-                    {{ __('Analytics') }}
-                </x-responsive-nav-link>
-                <x-responsive-nav-link href="{{ route('admin.holidays') }}" :active="request()->routeIs('admin.holidays')" wire:navigate>
-                    🗓️ {{ __('Holidays') }}
-                </x-responsive-nav-link>
-                <x-responsive-nav-link href="{{ route('admin.announcements') }}" :active="request()->routeIs('admin.announcements')" wire:navigate>
-                    📢 {{ __('Announcements') }}
-                </x-responsive-nav-link>
 
                 {{-- 3. Master Data Group --}}
-                <div class="block px-4 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                    {{ __('Organization & Reference') }}
+                <div x-data="{ expanded: false }" class="border-t border-gray-100 dark:border-gray-700/50">
+                    <button @click="expanded = !expanded" class="flex w-full items-center justify-between px-4 py-3 text-left text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                        <span>{{ __('Organization & Reference') }}</span>
+                        <svg class="h-4 w-4 transform transition-transform duration-200" :class="{'rotate-180': expanded}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div x-show="expanded" style="display: none;" class="bg-gray-50/50 dark:bg-black/20 pb-2">
+                        <x-responsive-nav-link href="{{ route('admin.employees') }}" :active="request()->routeIs('admin.employees')" wire:navigate>
+                            {{ __('Employees') }}
+                        </x-responsive-nav-link>
+                        <x-responsive-nav-link href="{{ route('admin.barcodes') }}" :active="request()->routeIs('admin.barcodes')" wire:navigate>
+                            {{ __('Barcode Locations') }}
+                        </x-responsive-nav-link>
+                        <x-responsive-nav-link href="{{ route('admin.masters.division') }}" :active="request()->routeIs('admin.masters.division')" wire:navigate>
+                            {{ __('Divisions') }}
+                        </x-responsive-nav-link>
+                        <x-responsive-nav-link href="{{ route('admin.masters.job-title') }}" :active="request()->routeIs('admin.masters.job-title')" wire:navigate>
+                            {{ __('Job Titles') }}
+                        </x-responsive-nav-link>
+                        <x-responsive-nav-link href="{{ route('admin.masters.education') }}" :active="request()->routeIs('admin.masters.education')" wire:navigate>
+                            {{ __('Education') }}
+                        </x-responsive-nav-link>
+                        <x-responsive-nav-link href="{{ route('admin.masters.shift') }}" :active="request()->routeIs('admin.masters.shift')" wire:navigate>
+                            {{ __('Shifts') }}
+                        </x-responsive-nav-link>
+                        <x-responsive-nav-link href="{{ route('admin.masters.admin') }}" :active="request()->routeIs('admin.masters.admin')" wire:navigate>
+                            {{ __('Admins') }}
+                        </x-responsive-nav-link>
+                    </div>
                 </div>
-                <x-responsive-nav-link href="{{ route('admin.employees') }}" :active="request()->routeIs('admin.employees')" wire:navigate>
-                    {{ __('Employees') }}
-                </x-responsive-nav-link>
-                <x-responsive-nav-link href="{{ route('admin.barcodes') }}" :active="request()->routeIs('admin.barcodes')" wire:navigate>
-                    {{ __('Barcode Locations') }}
-                </x-responsive-nav-link>
-                <x-responsive-nav-link href="{{ route('admin.masters.division') }}" :active="request()->routeIs('admin.masters.division')" wire:navigate>
-                    {{ __('Divisions') }}
-                </x-responsive-nav-link>
-                <x-responsive-nav-link href="{{ route('admin.masters.job-title') }}" :active="request()->routeIs('admin.masters.job-title')" wire:navigate>
-                    {{ __('Job Titles') }}
-                </x-responsive-nav-link>
-                <x-responsive-nav-link href="{{ route('admin.masters.education') }}" :active="request()->routeIs('admin.masters.education')" wire:navigate>
-                    {{ __('Education') }}
-                </x-responsive-nav-link>
-                <x-responsive-nav-link href="{{ route('admin.masters.shift') }}" :active="request()->routeIs('admin.masters.shift')" wire:navigate>
-                    {{ __('Shifts') }}
-                </x-responsive-nav-link>
-                <x-responsive-nav-link href="{{ route('admin.masters.admin') }}" :active="request()->routeIs('admin.masters.admin')" wire:navigate>
-                    {{ __('Admins') }}
-                </x-responsive-nav-link>
 
                 {{-- 4. System Group --}}
-                <div class="block px-4 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                    {{ __('System') }}
+                <div x-data="{ expanded: false }" class="border-t border-gray-100 dark:border-gray-700/50">
+                    <button @click="expanded = !expanded" class="flex w-full items-center justify-between px-4 py-3 text-left text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                        <span>{{ __('System') }}</span>
+                        <svg class="h-4 w-4 transform transition-transform duration-200" :class="{'rotate-180': expanded}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div x-show="expanded" style="display: none;" class="bg-gray-50/50 dark:bg-black/20 pb-2">
+                        <x-responsive-nav-link href="{{ route('admin.settings') }}" :active="request()->routeIs('admin.settings')" wire:navigate>
+                            {{ __('App Settings') }}
+                        </x-responsive-nav-link>
+                        @if(Auth::user()->isSuperadmin)
+                            <x-responsive-nav-link href="{{ route('admin.system-maintenance') }}" :active="request()->routeIs('admin.system-maintenance')" wire:navigate>
+                                {{ __('Maintenance') }}
+                            </x-responsive-nav-link>
+                        @endif
+                        <x-responsive-nav-link href="{{ route('admin.import-export.users') }}" :active="request()->routeIs('admin.import-export.users')" wire:navigate>
+                            {{ __('Import/Export Users') }}
+                        </x-responsive-nav-link>
+                        <x-responsive-nav-link href="{{ route('admin.import-export.attendances') }}" :active="request()->routeIs('admin.import-export.attendances')" wire:navigate>
+                            {{ __('Import/Export Attendance') }}
+                        </x-responsive-nav-link>
+                    </div>
                 </div>
-                <x-responsive-nav-link href="{{ route('admin.settings') }}" :active="request()->routeIs('admin.settings')" wire:navigate>
-                    {{ __('App Settings') }}
-                </x-responsive-nav-link>
-                @if(Auth::user()->isSuperadmin)
-                    <x-responsive-nav-link href="{{ route('admin.system-maintenance') }}" :active="request()->routeIs('admin.system-maintenance')" wire:navigate>
-                        {{ __('Maintenance') }}
-                    </x-responsive-nav-link>
-                @endif
-                <x-responsive-nav-link href="{{ route('admin.import-export.users') }}" :active="request()->routeIs('admin.import-export.users')" wire:navigate>
-                    {{ __('Import/Export Users') }}
-                </x-responsive-nav-link>
-                <x-responsive-nav-link href="{{ route('admin.import-export.attendances') }}" :active="request()->routeIs('admin.import-export.attendances')" wire:navigate>
-                    {{ __('Import/Export Attendance') }}
-                </x-responsive-nav-link>
             @else
                 <x-responsive-nav-link href="{{ route('home') }}" :active="request()->routeIs('home')" wire:navigate>
                     {{ __('Home') }}

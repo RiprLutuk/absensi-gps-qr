@@ -228,7 +228,7 @@
     </div>
 
     @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <div id="analytics-chart-script">
     <script>
         document.addEventListener('livewire:navigated', () => {
              let myTrendChart = null;
@@ -249,6 +249,12 @@
              const translateStatus = (key) => translations[key.toLowerCase()] || key;
 
              const initCharts = (trendData, metricsData, divisionData, lateData, absentData) => {
+                if (typeof Chart === 'undefined') {
+                    console.warn('Chart.js not loaded yet, retrying...');
+                    setTimeout(() => initCharts(trendData, metricsData, divisionData, lateData, absentData), 100);
+                    return;
+                }
+
                 // Destroy existing charts if needed
                 if (myTrendChart) myTrendChart.destroy();
                 if (myStatusChart) myStatusChart.destroy();
@@ -449,13 +455,15 @@
             };
 
             // Initial render
-            initCharts(
-                @json($trend), 
-                @json($metrics), 
-                @json($divisionStats), 
-                @json($lateBuckets), 
-                @json($absentStats)
-            );
+            setTimeout(() => {
+                initCharts(
+                    @json($trend), 
+                    @json($metrics), 
+                    @json($divisionStats), 
+                    @json($lateBuckets), 
+                    @json($absentStats)
+                );
+            }, 100);
 
             // React to Livewire updates
             Livewire.on('chart-update', ({ trend, metrics, divisionStats, lateBuckets, absentStats }) => {
@@ -463,5 +471,6 @@
             });
         });
     </script>
+    </div>
     @endpush
 </div>

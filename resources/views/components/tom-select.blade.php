@@ -8,14 +8,14 @@
         border-color: #d1d5db; /* border-gray-300 */
         color: #111827; /* text-gray-900 */
         border-radius: 0.5rem; /* rounded-lg */
-        padding-top: 0.375rem;   /* reduced from 0.5rem */
-        padding-bottom: 0.375rem; /* reduced from 0.5rem */
+        padding-top: 0.5rem;     /* 0.5rem = py-2 match */
+        padding-bottom: 0.5rem;  /* 0.5rem = py-2 match */
         padding-left: 0.75rem;
         padding-right: 2.5rem; /* Space for arrow */
         box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
         font-size: 0.875rem; /* text-sm */
         line-height: 1.25rem;
-        min-height: 36px; /* Tighter admin height */
+        min-height: 42px; /* Standard input height */
         display: flex;
         flex-wrap: nowrap;
         align-items: center;

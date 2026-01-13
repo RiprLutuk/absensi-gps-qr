@@ -244,6 +244,11 @@
             out: null
         };
 
+        // Define openMap globally
+        window.openMap = function(lat, lng) {
+            window.open(`https://www.google.com/maps/search/?api=1&query=${lat},${lng}`, '_blank');
+        };
+
         document.addEventListener('livewire:init', () => {
             Livewire.on('attendance-detail-loaded', (event) => {
                 const {
@@ -252,7 +257,15 @@
                     latOut,
                     lngOut
                 } = event;
-                setTimeout(() => initAttendanceMaps(latIn, lngIn, latOut, lngOut), 300);
+                
+                // Wait for modal transition (usually 300ms-500ms) and DOM update
+                setTimeout(() => {
+                    initAttendanceMaps(latIn, lngIn, latOut, lngOut);
+                }, 500); 
+            });
+            
+            Livewire.on('attendance-detail-closed', () => {
+                removeAllMaps();
             });
         });
 
@@ -260,55 +273,61 @@
             removeAllMaps();
 
             // Check In Map
-            if (latIn && lngIn) {
-                const mapInEl = document.getElementById('map_in');
-                if (mapInEl) {
-                    attendanceMaps.in = L.map('map_in').setView([Number(latIn), Number(lngIn)], 18);
+            const mapInEl = document.getElementById('map_in');
+            if (mapInEl && latIn && lngIn) {
+                attendanceMaps.in = L.map('map_in').setView([Number(latIn), Number(lngIn)], 18);
 
-                    const blueIcon = L.divIcon({
-                        className: 'custom-marker',
-                        html: '<div style="background: #3b82f6; width: 32px; height: 32px; border-radius: 50%; border: 4px solid white; box-shadow: 0 4px 6px rgba(0,0,0,0.3);"></div>',
-                        iconSize: [32, 32],
-                        iconAnchor: [16, 16]
-                    });
+                const blueIcon = L.divIcon({
+                    className: 'custom-marker',
+                    html: '<div style="background: #3b82f6; width: 32px; height: 32px; border-radius: 50%; border: 4px solid white; box-shadow: 0 4px 6px rgba(0,0,0,0.3);"></div>',
+                    iconSize: [32, 32],
+                    iconAnchor: [16, 16]
+                });
 
-                    L.marker([Number(latIn), Number(lngIn)], {
-                            icon: blueIcon
-                        })
-                        .addTo(attendanceMaps.in)
-                        .bindPopup('<b>📍 {{ __('Check In Location') }}</b>');
+                L.marker([Number(latIn), Number(lngIn)], {
+                        icon: blueIcon
+                    })
+                    .addTo(attendanceMaps.in)
+                    .bindPopup('<b>📍 {{ __('Check In Location') }}</b>');
 
-                    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                        maxZoom: 19,
-                        attribution: '© OpenStreetMap'
-                    }).addTo(attendanceMaps.in);
-                }
+                L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '© OpenStreetMap'
+                }).addTo(attendanceMaps.in);
+                
+                // Force map resize calculation after render
+                setTimeout(() => {
+                    attendanceMaps.in.invalidateSize();
+                }, 100);
             }
 
             // Check Out Map
-            if (latOut && lngOut) {
-                const mapOutEl = document.getElementById('map_out');
-                if (mapOutEl) {
-                    attendanceMaps.out = L.map('map_out').setView([Number(latOut), Number(lngOut)], 18);
+            const mapOutEl = document.getElementById('map_out');
+            if (mapOutEl && latOut && lngOut) {
+                attendanceMaps.out = L.map('map_out').setView([Number(latOut), Number(lngOut)], 18);
 
-                    const orangeIcon = L.divIcon({
-                        className: 'custom-marker',
-                        html: '<div style="background: #f97316; width: 32px; height: 32px; border-radius: 50%; border: 4px solid white; box-shadow: 0 4px 6px rgba(0,0,0,0.3);"></div>',
-                        iconSize: [32, 32],
-                        iconAnchor: [16, 16]
-                    });
+                const orangeIcon = L.divIcon({
+                    className: 'custom-marker',
+                    html: '<div style="background: #f97316; width: 32px; height: 32px; border-radius: 50%; border: 4px solid white; box-shadow: 0 4px 6px rgba(0,0,0,0.3);"></div>',
+                    iconSize: [32, 32],
+                    iconAnchor: [16, 16]
+                });
 
-                    L.marker([Number(latOut), Number(lngOut)], {
-                            icon: orangeIcon
-                        })
-                        .addTo(attendanceMaps.out)
-                        .bindPopup('<b>📍 {{ __('Check Out Location') }}</b>');
+                L.marker([Number(latOut), Number(lngOut)], {
+                        icon: orangeIcon
+                    })
+                    .addTo(attendanceMaps.out)
+                    .bindPopup('<b>📍 {{ __('Check Out Location') }}</b>');
 
-                    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                        maxZoom: 19,
-                        attribution: '© OpenStreetMap'
-                    }).addTo(attendanceMaps.out);
-                }
+                L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '© OpenStreetMap'
+                }).addTo(attendanceMaps.out);
+                
+                // Force map resize calculation after render
+                setTimeout(() => {
+                    attendanceMaps.out.invalidateSize();
+                }, 100);
             }
 
             // Calculate Distance
@@ -334,7 +353,7 @@
             if (distEl) {
                 let text, colorClass;
                 if (distance < 1000) {
-                    text = `${distance.toFixed(2)} {{ __('meters') }}`;
+                    text = `${distance.toFixed(2)} meters`;
                     colorClass = distance < 100 ? 'text-green-600 dark:text-green-400' :
                         distance < 500 ? 'text-yellow-600 dark:text-yellow-400' :
                         'text-orange-600 dark:text-orange-400';
@@ -344,6 +363,8 @@
                 }
                 distEl.textContent = text;
                 distEl.className = `font-bold text-sm ${colorClass}`;
+            } else {
+                console.warn('Distance element not found');
             }
         }
 
@@ -356,11 +377,6 @@
                 attendanceMaps.out.remove();
                 attendanceMaps.out = null;
             }
-        }
-
-        // Backward compatibility
-        function removeMap() {
-            removeAllMaps();
         }
     </script>
 @endpush

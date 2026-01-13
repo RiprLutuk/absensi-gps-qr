@@ -1,63 +1,77 @@
-<div>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Holiday Calendar') }}
-        </h2>
-    </x-slot>
-
-    <div class="py-6">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            @include('components.alert-messages')
-
-            <div class="flex justify-between items-center mb-6">
-                <p class="text-gray-600 dark:text-gray-400">{{ __('Manage public holidays and days off.') }}</p>
-                <button wire:click="create" class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 flex items-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                    </svg>
-                    {{ __('Add Holiday') }}
-                </button>
+<div class="py-12">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+                <h2 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
+                    {{ __('Holiday Calendar') }}
+                </h2>
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                    {{ __('Manage public holidays and company days off.') }}
+                </p>
             </div>
+            <x-button wire:click="create" class="!bg-primary-600 hover:!bg-primary-700">
+                <x-heroicon-m-plus class="mr-2 h-4 w-4" />
+                {{ __('Add Holiday') }}
+            </x-button>
+        </div>
 
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm rounded-lg">
-                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                    <thead class="bg-gray-50 dark:bg-gray-700">
+        <!-- Content -->
+        <div class="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
+            <!-- Desktop Table -->
+            <div class="hidden sm:block overflow-x-auto">
+                <table class="w-full whitespace-nowrap text-left text-sm">
+                    <thead class="bg-gray-50 text-gray-500 dark:bg-gray-700/50 dark:text-gray-400">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">{{ __('Date') }}</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">{{ __('Name') }}</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">{{ __('Description') }}</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">{{ __('Recurring') }}</th>
-                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">{{ __('Actions') }}</th>
+                            <th scope="col" class="px-6 py-4 font-medium">{{ __('Date') }}</th>
+                            <th scope="col" class="px-6 py-4 font-medium">{{ __('Name') }}</th>
+                            <th scope="col" class="px-6 py-4 font-medium">{{ __('Description') }}</th>
+                            <th scope="col" class="px-6 py-4 font-medium">{{ __('Recurring') }}</th>
+                            <th scope="col" class="px-6 py-4 text-right font-medium">{{ __('Actions') }}</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                    <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
                         @forelse($holidays as $holiday)
-                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                            <tr class="group hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                                <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
                                     {{ $holiday->date->translatedFormat('d M Y') }}
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+                                <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
                                     {{ $holiday->name }}
                                 </td>
-                                <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
+                                <td class="px-6 py-4 text-gray-500 dark:text-gray-400 max-w-xs truncate">
                                     {{ $holiday->description ?? '-' }}
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
+                                <td class="px-6 py-4">
                                     @if($holiday->is_recurring)
-                                        <span class="px-2 py-1 text-xs bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 rounded-full">{{ __('Yes') }}</span>
+                                        <span class="inline-flex items-center rounded-md bg-purple-50 px-2 py-1 text-xs font-medium text-purple-700 ring-1 ring-inset ring-purple-700/10 dark:bg-purple-900/30 dark:text-purple-400 dark:ring-purple-700/50">
+                                            {{ __('Yes') }}
+                                        </span>
                                     @else
-                                        <span class="px-2 py-1 text-xs bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300 rounded-full">{{ __('No') }}</span>
+                                        <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10 dark:bg-gray-400/10 dark:text-gray-400 dark:ring-gray-400/20">
+                                            {{ __('No') }}
+                                        </span>
                                     @endif
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <button wire:click="edit({{ $holiday->id }})" class="text-primary-600 hover:text-primary-900 dark:text-primary-400 mr-3">{{ __('Edit') }}</button>
-                                    <button wire:click="delete({{ $holiday->id }})" wire:confirm="{{ __('Are you sure you want to delete this holiday?') }}" class="text-red-600 hover:text-red-900 dark:text-red-400">{{ __('Delete') }}</button>
+                                <td class="px-6 py-4 text-right">
+                                    <div class="flex justify-end gap-2">
+                                        <button wire:click="edit({{ $holiday->id }})" class="text-gray-400 hover:text-blue-600 transition-colors" title="{{ __('Edit') }}">
+                                            <x-heroicon-m-pencil-square class="h-5 w-5" />
+                                        </button>
+                                        <button wire:click="delete({{ $holiday->id }})" wire:confirm="{{ __('Are you sure you want to delete this holiday?') }}" class="text-gray-400 hover:text-red-600 transition-colors" title="{{ __('Delete') }}">
+                                            <x-heroicon-m-trash class="h-5 w-5" />
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         @empty
                             <tr>
                                 <td colspan="5" class="px-6 py-12 text-center text-gray-500 dark:text-gray-400">
-                                    {{ __('No holidays found. Add your first holiday!') }}
+                                    <div class="flex flex-col items-center justify-center">
+                                        <x-heroicon-o-calendar-days class="h-12 w-12 text-gray-300 dark:text-gray-600 mb-3" />
+                                        <p class="font-medium">{{ __('No holidays found') }}</p>
+                                        <p class="text-sm mt-1">{{ __('Add holidays to manage work schedules.') }}</p>
+                                    </div>
                                 </td>
                             </tr>
                         @endforelse
@@ -65,48 +79,74 @@
                 </table>
             </div>
 
-            <div class="mt-4">
+            <!-- Mobile List -->
+            <div class="grid grid-cols-1 sm:hidden divide-y divide-gray-200 dark:divide-gray-700">
+                @foreach ($holidays as $holiday)
+                    <div class="p-4 space-y-2">
+                        <div class="flex justify-between items-start">
+                             <div>
+                                <h4 class="font-medium text-gray-900 dark:text-white">{{ $holiday->name }}</h4>
+                                <p class="text-sm text-gray-500">{{ $holiday->date->translatedFormat('d M Y') }}</p>
+                             </div>
+                             @if($holiday->is_recurring)
+                                <span class="text-xs bg-purple-100 text-purple-800 px-2 py-0.5 rounded">{{ __('Recurring') }}</span>
+                             @endif
+                        </div>
+                        @if($holiday->description)
+                            <p class="text-sm text-gray-600 dark:text-gray-300 bg-gray-50 dark:bg-gray-700/50 p-2 rounded">{{ $holiday->description }}</p>
+                        @endif
+                        <div class="flex justify-end gap-3 pt-2 border-t border-gray-100 dark:border-gray-700/50 mt-2">
+                             <button wire:click="edit({{ $holiday->id }})" class="text-blue-600 dark:text-blue-400 text-sm font-medium">Edit</button>
+                             <button wire:click="delete({{ $holiday->id }})" wire:confirm="{{ __('Are you sure?') }}" class="text-red-600 dark:text-red-400 text-sm font-medium">Delete</button>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
+            <div class="border-t border-gray-200 bg-gray-50 px-6 py-3 dark:border-gray-700 dark:bg-gray-800">
                 {{ $holidays->links() }}
             </div>
         </div>
     </div>
 
     <!-- Modal -->
-    @if($showModal)
-    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-md mx-4">
-            <div class="px-6 py-4 border-b dark:border-gray-700">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                    {{ $editMode ? __('Edit Holiday') : __('Add Holiday') }}
-                </h3>
-            </div>
+    <x-dialog-modal wire:model="showModal">
+        <x-slot name="title">
+            {{ $editMode ? __('Edit Holiday') : __('Add Holiday') }}
+        </x-slot>
+
+        <x-slot name="content">
             <form wire:submit="save">
-                <div class="p-6 space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('Date') }}</label>
-                        <input type="date" wire:model="date" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white" required>
-                        @error('date') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                <div class="space-y-4">
+                     <div>
+                        <x-label for="date" value="{{ __('Date') }}" />
+                        <x-input id="date" type="date" class="mt-1 block w-full" wire:model="date" required />
+                        <x-input-error for="date" class="mt-2" />
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('Name') }}</label>
-                        <input type="text" wire:model="name" placeholder="{{ __('e.g. Christmas Day') }}" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white" required>
-                        @error('name') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        <x-label for="name" value="{{ __('Holiday Name') }}" />
+                        <x-input id="name" type="text" class="mt-1 block w-full" wire:model="name" placeholder="e.g. Christmas Day" required />
+                        <x-input-error for="name" class="mt-2" />
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('Description') }} ({{ __('Optional') }})</label>
-                        <input type="text" wire:model="description" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+                     <div>
+                        <x-label for="description" value="{{ __('Description') }} (Optional)" />
+                        <x-input id="description" type="text" class="mt-1 block w-full" wire:model="description" />
                     </div>
-                    <div class="flex items-center gap-2">
-                        <input type="checkbox" wire:model="is_recurring" id="is_recurring" class="rounded border-gray-300 dark:border-gray-600 text-primary-600">
-                        <label for="is_recurring" class="text-sm text-gray-700 dark:text-gray-300">{{ __('Recurring yearly') }}</label>
+                    <div class="flex items-center gap-2 pt-2">
+                        <x-checkbox id="is_recurring" wire:model="is_recurring" />
+                        <x-label for="is_recurring" value="{{ __('Recurring yearly') }}" />
                     </div>
-                </div>
-                <div class="px-6 py-4 border-t dark:border-gray-700 flex justify-end gap-3">
-                    <button type="button" wire:click="$set('showModal', false)" class="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">{{ __('Cancel') }}</button>
-                    <button type="submit" class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700">{{ __('Save') }}</button>
                 </div>
             </form>
-        </div>
-    </div>
-    @endif
+        </x-slot>
+
+        <x-slot name="footer">
+            <x-secondary-button wire:click="$set('showModal', false)" wire:loading.attr="disabled">
+                {{ __('Cancel') }}
+            </x-secondary-button>
+            <x-button class="ml-2" wire:click="save" wire:loading.attr="disabled">
+                {{ __('Save') }}
+            </x-button>
+        </x-slot>
+    </x-dialog-modal>
 </div>

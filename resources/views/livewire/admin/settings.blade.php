@@ -1,96 +1,97 @@
-<div>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Application Settings') }}
-        </h2>
-    </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 shadow-xl sm:rounded-lg">
-                <div class="p-4 lg:p-6">
-                    
-                    <div class="mb-4 flex-col items-center gap-5 sm:flex-row md:flex md:justify-between lg:mr-4">
-                        <h3 class="mb-4 text-lg font-semibold leading-tight text-gray-800 dark:text-gray-200 md:mb-0">
-                            {{ __('Generic Settings') }}
-                        </h3>
-                    </div>
-
-                    <div class="space-y-6">
-                        @foreach($groups as $group => $settings)
-                            <div class="p-4 sm:p-8 bg-gray-50 dark:bg-gray-700/50 shadow-sm sm:rounded-lg border border-gray-100 dark:border-gray-700">
-                                <header class="mb-6 border-b border-gray-200 dark:border-gray-700 pb-2">
-                                    <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100 uppercase tracking-wider">
-                                        {{ $group }}
-                                    </h2>
-                                    <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                                        {{ __('Manage configuration for') }} {{ $group }}
-                                    </p>
-                                </header>
-                                
-                                <div class="grid gap-6">
-                                    @foreach($settings as $setting)
-                                        <div class="grid gap-2" wire:key="setting-{{ $setting->id }}">
-                                            <div class="flex items-center justify-between">
-                                                <x-label :for="'setting_' . $this->getId() . '_' . $setting->id" :value="$setting->description ?? $setting->key" />
-                                                <span class="text-xs font-mono text-gray-400 dark:text-gray-500">{{ $setting->key }}</span>
-                                            </div>
-                                            
-                                            <div class="relative">
-                                                @if($setting->type === 'boolean')
-                                                    <!-- Boolean Toggle -->
-                                                    <label class="relative inline-flex items-center cursor-pointer">
-                                                        <input type="checkbox" 
-                                                            id="'setting_' . $this->getId() . '_' . $setting->id" 
-                                                            class="sr-only peer"
-                                                            @checked($setting->value == '1')
-                                                            wire:change="updateValue({{ $setting->id }}, $event.target.checked)"
-                                                            {{ !auth()->user()->isSuperadmin ? 'disabled' : '' }}
-                                                        >
-                                                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                                                        <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                                            {{ $setting->value == '1' ? __('Enabled') : __('Disabled') }}
-                                                        </span>
-                                                    </label>
-                                                @elseif($setting->type === 'select' && $setting->key === 'app.time_format')
-                                                    <!-- Time Format Select -->
-                                                    <select 
-                                                        id="setting_{{ $this->getId() }}_{{ $setting->id }}"
-                                                        class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300"
-                                                        wire:change="updateValue({{ $setting->id }}, $event.target.value)"
-                                                        {{ !auth()->user()->isSuperadmin ? 'disabled' : '' }}
-                                                    >
-                                                        <option value="24" @selected($setting->value == '24')>{{ __('24 Hour (17:00)') }}</option>
-                                                        <option value="12" @selected($setting->value == '12')>{{ __('12 Hour (05:00 PM)') }}</option>
-                                                    </select>
-                                                @else
-                                                    <!-- Text/Number Input -->
-                                                    <x-input 
-                                                        :id="'setting_' . $this->getId() . '_' . $setting->id" 
-                                                        :type="$setting->type === 'number' ? 'number' : 'text'" 
-                                                        class="mt-1 block w-full disabled:bg-gray-100 disabled:text-gray-500 dark:disabled:bg-gray-700 dark:disabled:text-gray-400" 
-                                                        :value="$setting->value"
-                                                        autocomplete="off"
-                                                        wire:change="updateValue({{ $setting->id }}, $event.target.value)"
-                                                        :disabled="!auth()->user()->isSuperadmin"
-                                                    />
-                                                @endif
-
-                                                <div class="mt-1 flex justify-end">
-                                                    <span class="text-xs text-blue-500" wire:loading wire:target="updateValue({{ $setting->id }})">
-                                                        {{ __('Saving...') }}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-
-                </div>
+<div class="py-12">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+                <h2 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
+                    {{ __('Application Settings') }}
+                </h2>
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                    {{ __('Configure global application settings and preferences.') }}
+                </p>
             </div>
+        </div>
+
+        <!-- Content -->
+        <div class="space-y-6">
+            @foreach($groups as $group => $settings)
+                <div class="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
+                    <div class="border-b border-gray-900/5 bg-gray-50 p-6 dark:border-gray-700 dark:bg-gray-700/50">
+                        <h3 class="text-base font-semibold leading-7 text-gray-900 dark:text-gray-100 uppercase tracking-wider">
+                            {{ $group }}
+                        </h3>
+                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                            {{ __('Configuration for') }} {{ $group }}
+                        </p>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                            @foreach($settings as $setting)
+                                <div class="sm:col-span-4" wire:key="setting-{{ $setting->id }}">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <x-label :for="'setting_' . $this->getId() . '_' . $setting->id" :value="$setting->description ?? $setting->key" />
+                                        <span class="text-xs font-mono text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-700 px-2 py-0.5 rounded">{{ $setting->key }}</span>
+                                    </div>
+
+                                    <div class="relative">
+                                        @if($setting->type === 'boolean')
+                                            <button 
+                                                type="button" 
+                                                wire:click="updateValue({{ $setting->id }}, {{ $setting->value == '1' ? '0' : '1' }})" 
+                                                class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary-600 focus:ring-offset-2 {{ $setting->value == '1' ? 'bg-primary-600' : 'bg-gray-200 dark:bg-gray-700' }}"
+                                                {{ !auth()->user()->isSuperadmin ? 'disabled' : '' }}
+                                            >
+                                                <span class="sr-only">{{ $setting->description }}</span>
+                                                <span aria-hidden="true" class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out {{ $setting->value == '1' ? 'translate-x-5' : 'translate-x-0' }}"></span>
+                                            </button>
+                                            <span class="ml-3 text-sm text-gray-900 dark:text-gray-300">
+                                                {{ $setting->value == '1' ? __('Enabled') : __('Disabled') }}
+                                            </span>
+
+                                        @elseif($setting->type === 'select' && $setting->key === 'app.time_format')
+                                            <select 
+                                                id="setting_{{ $this->getId() }}_{{ $setting->id }}"
+                                                class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 sm:text-sm"
+                                                wire:change="updateValue({{ $setting->id }}, $event.target.value)"
+                                                {{ !auth()->user()->isSuperadmin ? 'disabled' : '' }}
+                                            >
+                                                <option value="24" @selected($setting->value == '24')>{{ __('24 Hour (17:00)') }}</option>
+                                                <option value="12" @selected($setting->value == '12')>{{ __('12 Hour (05:00 PM)') }}</option>
+                                            </select>
+
+                                        @else
+                                            <x-input 
+                                                :id="'setting_' . $this->getId() . '_' . $setting->id" 
+                                                :type="$setting->type === 'number' ? 'number' : 'text'" 
+                                                class="mt-1 block w-full disabled:bg-gray-100 disabled:text-gray-500 dark:disabled:bg-gray-700 dark:disabled:text-gray-400" 
+                                                :value="$setting->value"
+                                                autocomplete="off"
+                                                wire:change="updateValue({{ $setting->id }}, $event.target.value)"
+                                                :disabled="!auth()->user()->isSuperadmin"
+                                            />
+                                        @endif
+
+                                        <div class="mt-2 flex items-center h-4">
+                                            <span class="text-xs text-primary-600 dark:text-primary-400 font-medium opacity-0 transition-opacity duration-300" 
+                                                  wire:loading.class.remove="opacity-0" 
+                                                  wire:target="updateValue({{ $setting->id }})">
+                                                <div class="flex items-center gap-1">
+                                                    <svg class="animate-spin h-3 w-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                    </svg>
+                                                    <span>{{ __('Saving...') }}</span>
+                                                </div>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            @endforeach
         </div>
     </div>
 </div>

@@ -1,70 +1,81 @@
-<div>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Announcements') }}
-        </h2>
-    </x-slot>
-
-    <div class="py-6">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            @include('components.alert-messages')
-
-            <div class="flex justify-between items-center mb-6">
-                <p class="text-gray-600 dark:text-gray-400">{{ __('Create announcements for all users.') }}</p>
-                <button wire:click="create" class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 flex items-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                    </svg>
-                    {{ __('New Announcement') }}
-                </button>
+<div class="py-12">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+                <h2 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
+                    {{ __('Announcements') }}
+                </h2>
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                    {{ __('Broadcast news and updates to all employees.') }}
+                </p>
             </div>
+            <x-button wire:click="create" class="!bg-primary-600 hover:!bg-primary-700">
+                <x-heroicon-m-plus class="mr-2 h-4 w-4" />
+                {{ __('New Announcement') }}
+            </x-button>
+        </div>
 
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm rounded-lg">
-                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                    <thead class="bg-gray-50 dark:bg-gray-700">
+        <!-- Content -->
+        <div class="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
+            <!-- Desktop Table -->
+            <div class="hidden sm:block overflow-x-auto">
+                <table class="w-full whitespace-nowrap text-left text-sm">
+                    <thead class="bg-gray-50 text-gray-500 dark:bg-gray-700/50 dark:text-gray-400">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">{{ __('Title') }}</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">{{ __('Priority') }}</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">{{ __('Publish Date') }}</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">{{ __('Expires') }}</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">{{ __('Status') }}</th>
-                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">{{ __('Actions') }}</th>
+                            <th scope="col" class="px-6 py-4 font-medium">{{ __('Title') }}</th>
+                            <th scope="col" class="px-6 py-4 font-medium">{{ __('Priority') }}</th>
+                            <th scope="col" class="px-6 py-4 font-medium">{{ __('Publish Date') }}</th>
+                            <th scope="col" class="px-6 py-4 font-medium">{{ __('Expires') }}</th>
+                            <th scope="col" class="px-6 py-4 font-medium">{{ __('Status') }}</th>
+                            <th scope="col" class="px-6 py-4 text-right font-medium">{{ __('Actions') }}</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                    <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
                         @forelse($announcements as $announcement)
-                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                            <tr class="group hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                                 <td class="px-6 py-4">
-                                    <div class="text-sm font-medium text-gray-900 dark:text-white">{{ $announcement->title }}</div>
-                                    <div class="text-xs text-gray-500 dark:text-gray-400">{{ __('By') }} {{ $announcement->creator?->name ?? 'System' }}</div>
+                                     <div class="font-medium text-gray-900 dark:text-white">{{ $announcement->title }}</div>
+                                     <div class="text-xs text-gray-500">{{ __('By') }} {{ $announcement->creator?->name ?? 'System' }}</div>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="px-2 py-1 text-xs rounded-full
-                                        {{ $announcement->priority === 'high' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' : '' }}
-                                        {{ $announcement->priority === 'normal' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' : '' }}
-                                        {{ $announcement->priority === 'low' ? 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300' : '' }}
-                                    ">{{ __(ucfirst($announcement->priority)) }}</span>
+                                <td class="px-6 py-4">
+                                     <span class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset
+                                        {{ $announcement->priority === 'high' ? 'bg-red-50 text-red-700 ring-red-600/10 dark:bg-red-900/30 dark:text-red-400 dark:ring-red-400/20' : '' }}
+                                        {{ $announcement->priority === 'normal' ? 'bg-blue-50 text-blue-700 ring-blue-700/10 dark:bg-blue-900/30 dark:text-blue-400 dark:ring-blue-400/20' : '' }}
+                                        {{ $announcement->priority === 'low' ? 'bg-gray-50 text-gray-600 ring-gray-500/10 dark:bg-gray-700/30 dark:text-gray-400 dark:ring-gray-400/20' : '' }}">
+                                        {{ __(ucfirst($announcement->priority)) }}
+                                    </span>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                                <td class="px-6 py-4 text-gray-600 dark:text-gray-300">
                                     {{ $announcement->publish_date->translatedFormat('d M Y') }}
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                                <td class="px-6 py-4 text-gray-600 dark:text-gray-300">
                                     {{ $announcement->expire_date?->translatedFormat('d M Y') ?? '-' }}
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <button wire:click="toggleActive({{ $announcement->id }})" class="px-2 py-1 text-xs rounded-full {{ $announcement->is_active ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300' }}">
-                                        {{ $announcement->is_active ? __('Active') : __('Inactive') }}
+                                <td class="px-6 py-4">
+                                    <button wire:click="toggleActive({{ $announcement->id }})" class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary-600 focus:ring-offset-2 {{ $announcement->is_active ? 'bg-primary-600' : 'bg-gray-200 dark:bg-gray-700' }}">
+                                        <span class="sr-only">{{ __('Use setting') }}</span>
+                                        <span aria-hidden="true" class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out {{ $announcement->is_active ? 'translate-x-5' : 'translate-x-0' }}"></span>
                                     </button>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <button wire:click="edit({{ $announcement->id }})" class="text-primary-600 hover:text-primary-900 dark:text-primary-400 mr-3">{{ __('Edit') }}</button>
-                                    <button wire:click="delete({{ $announcement->id }})" wire:confirm="{{ __('Are you sure?') }}" class="text-red-600 hover:text-red-900 dark:text-red-400">{{ __('Delete') }}</button>
+                                <td class="px-6 py-4 text-right">
+                                    <div class="flex justify-end gap-2">
+                                        <button wire:click="edit({{ $announcement->id }})" class="text-gray-400 hover:text-blue-600 transition-colors" title="{{ __('Edit') }}">
+                                            <x-heroicon-m-pencil-square class="h-5 w-5" />
+                                        </button>
+                                        <button wire:click="delete({{ $announcement->id }})" wire:confirm="{{ __('Are you sure?') }}" class="text-gray-400 hover:text-red-600 transition-colors" title="{{ __('Delete') }}">
+                                            <x-heroicon-m-trash class="h-5 w-5" />
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         @empty
                             <tr>
                                 <td colspan="6" class="px-6 py-12 text-center text-gray-500 dark:text-gray-400">
-                                    {{ __('No announcements yet.') }}
+                                    <div class="flex flex-col items-center justify-center">
+                                        <x-heroicon-o-megaphone class="h-12 w-12 text-gray-300 dark:text-gray-600 mb-3" />
+                                        <p class="font-medium">{{ __('No announcements yet') }}</p>
+                                    </div>
                                 </td>
                             </tr>
                         @endforelse
@@ -72,64 +83,90 @@
                 </table>
             </div>
 
-            <div class="mt-4">
+             <!-- Mobile List -->
+            <div class="grid grid-cols-1 sm:hidden divide-y divide-gray-200 dark:divide-gray-700">
+                @foreach ($announcements as $announcement)
+                    <div class="p-4 space-y-2">
+                        <div class="flex justify-between items-start">
+                             <div>
+                                <h4 class="font-medium text-gray-900 dark:text-white">{{ $announcement->title }}</h4>
+                                <span class="text-xs text-gray-500">{{ $announcement->publish_date->format('d M') }}</span>
+                             </div>
+                             <span class="text-xs font-bold uppercase {{ $announcement->priority === 'high' ? 'text-red-600' : 'text-blue-600' }}">{{ $announcement->priority }}</span>
+                        </div>
+                        <div class="flex items-center justify-between pt-2">
+                             <button wire:click="toggleActive({{ $announcement->id }})" class="text-xs font-medium {{ $announcement->is_active ? 'text-green-600' : 'text-gray-400' }}">
+                                 {{ $announcement->is_active ? 'Active' : 'Inactive' }}
+                             </button>
+                             <div class="flex gap-3">
+                                 <button wire:click="edit({{ $announcement->id }})" class="text-blue-600 dark:text-blue-400 text-sm font-medium">Edit</button>
+                                 <button wire:click="delete({{ $announcement->id }})" wire:confirm="{{ __('Are you sure?') }}" class="text-red-600 dark:text-red-400 text-sm font-medium">Delete</button>
+                             </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
+            <div class="border-t border-gray-200 bg-gray-50 px-6 py-3 dark:border-gray-700 dark:bg-gray-800">
                 {{ $announcements->links() }}
             </div>
         </div>
     </div>
 
     <!-- Modal -->
-    @if($showModal)
-    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-lg mx-4">
-            <div class="px-6 py-4 border-b dark:border-gray-700">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                    {{ $editMode ? __('Edit Announcement') : __('New Announcement') }}
-                </h3>
-            </div>
+    <x-dialog-modal wire:model="showModal">
+        <x-slot name="title">
+            {{ $editMode ? __('Edit Announcement') : __('New Announcement') }}
+        </x-slot>
+
+        <x-slot name="content">
             <form wire:submit="save">
-                <div class="p-6 space-y-4">
+                <div class="space-y-4">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('Title') }}</label>
-                        <input type="text" wire:model="title" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white" required>
-                        @error('title') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        <x-label for="title" value="{{ __('Title') }}" />
+                        <x-input id="title" type="text" class="mt-1 block w-full" wire:model="title" required />
+                        <x-input-error for="title" class="mt-2" />
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('Content') }}</label>
-                        <textarea wire:model="content" rows="4" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white" required></textarea>
-                        @error('content') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        <x-label for="content" value="{{ __('Content') }}" />
+                        <textarea wire:model="content" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-primary-600" required></textarea>
+                        <x-input-error for="content" class="mt-2" />
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('Priority') }}</label>
-                            <select wire:model="priority" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+                             <x-label for="priority" value="{{ __('Priority') }}" />
+                            <select wire:model="priority" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-primary-600">
                                 <option value="low">{{ __('Low') }}</option>
                                 <option value="normal">{{ __('Normal') }}</option>
                                 <option value="high">{{ __('High') }}</option>
                             </select>
                         </div>
                         <div class="flex items-center gap-2 pt-6">
-                            <input type="checkbox" wire:model="is_active" id="is_active" class="rounded border-gray-300 dark:border-gray-600 text-primary-600">
-                            <label for="is_active" class="text-sm text-gray-700 dark:text-gray-300">{{ __('Active') }}</label>
+                            <x-checkbox id="is_active" wire:model="is_active" />
+                            <x-label for="is_active" value="{{ __('Active') }}" />
                         </div>
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('Publish Date') }}</label>
-                            <input type="date" wire:model="publish_date" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white" required>
+                            <x-label for="publish_date" value="{{ __('Publish Date') }}" />
+                            <x-input id="publish_date" type="date" class="mt-1 block w-full" wire:model="publish_date" required />
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('Expire Date') }} ({{ __('Optional') }})</label>
-                            <input type="date" wire:model="expire_date" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+                            <x-label for="expire_date" value="{{ __('Expire Date') }} (Optional)" />
+                            <x-input id="expire_date" type="date" class="mt-1 block w-full" wire:model="expire_date" />
                         </div>
                     </div>
                 </div>
-                <div class="px-6 py-4 border-t dark:border-gray-700 flex justify-end gap-3">
-                    <button type="button" wire:click="$set('showModal', false)" class="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">{{ __('Cancel') }}</button>
-                    <button type="submit" class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700">{{ __('Save') }}</button>
-                </div>
             </form>
-        </div>
-    </div>
-    @endif
+        </x-slot>
+
+        <x-slot name="footer">
+            <x-secondary-button wire:click="$set('showModal', false)" wire:loading.attr="disabled">
+                {{ __('Cancel') }}
+            </x-secondary-button>
+            <x-button class="ml-2" wire:click="save" wire:loading.attr="disabled">
+                {{ __('Save') }}
+            </x-button>
+        </x-slot>
+    </x-dialog-modal>
 </div>

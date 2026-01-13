@@ -1,133 +1,124 @@
 <div>
-  <div class="mb-4 flex-col items-center gap-5 sm:flex-row md:flex md:justify-between lg:mr-4">
-    <h3 class="mb-4 text-lg font-semibold leading-tight text-gray-800 dark:text-gray-200 md:mb-0">
-      {{ __('Division Data') }}
-    </h3>
-    <x-button wire:click="showCreating" class="w-full sm:w-auto justify-center">
-      <x-heroicon-o-plus class="mr-2 h-4 w-4" /> {{ __('Add Division') }}
-    </x-button>
-  </div>
+    <div class="mx-auto max-w-7xl px-2 sm:px-0 lg:px-0">
+        <!-- Header -->
+         <div class="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+                <h2 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
+                    {{ __('Divisions') }}
+                </h2>
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                    {{ __('Manage company divisions and departments.') }}
+                </p>
+            </div>
+            <x-button wire:click="showCreating" class="!bg-primary-600 hover:!bg-primary-700">
+                <x-heroicon-m-plus class="mr-2 h-4 w-4" />
+                {{ __('Add Division') }}
+            </x-button>
+        </div>
 
-  <!-- Mobile Card View -->
-  <div class="grid grid-cols-1 gap-4 sm:hidden mb-4">
-    @foreach ($divisions as $division)
-      <div class="card p-4">
-          <div class="flex justify-between items-start mb-3">
-              <h4 class="text-base font-bold text-gray-900 dark:text-white">{{ $division->name }}</h4>
-          </div>
-          <div class="grid grid-cols-2 gap-3 pt-3 border-t border-gray-100 dark:border-gray-700">
-              <x-secondary-button wire:click="edit({{ $division->id }})" class="justify-center px-2 py-1">
-                  <x-heroicon-o-pencil class="w-4 h-4" />
-              </x-secondary-button>
-              <x-danger-button wire:click="confirmDeletion({{ $division->id }}, '{{ $division->name }}')" class="justify-center px-2 py-1">
-                  <x-heroicon-o-trash class="w-4 h-4" />
-              </x-danger-button>
-          </div>
-      </div>
-    @endforeach
-  </div>
+        <!-- Content -->
+         <div class="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
+            <!-- Desktop Table -->
+            <div class="hidden sm:block overflow-x-auto">
+                 <table class="w-full whitespace-nowrap text-left text-sm">
+                    <thead class="bg-gray-50 text-gray-500 dark:bg-gray-700/50 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="px-6 py-4 font-medium">{{ __('Division Name') }}</th>
+                            <th scope="col" class="px-6 py-4 text-right font-medium">{{ __('Actions') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
+                        @forelse ($divisions as $division)
+                           <tr class="group hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                                <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
+                                    {{ $division->name }}
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <div class="flex justify-end gap-2">
+                                        <button wire:click="edit({{ $division->id }})" class="text-gray-400 hover:text-blue-600 transition-colors" title="{{ __('Edit') }}">
+                                            <x-heroicon-m-pencil-square class="h-5 w-5" />
+                                        </button>
+                                        <button wire:click="confirmDeletion({{ $division->id }}, '{{ $division->name }}')" class="text-gray-400 hover:text-red-600 transition-colors" title="{{ __('Delete') }}">
+                                            <x-heroicon-m-trash class="h-5 w-5" />
+                                        </button>
+                                    </div>
+                                </td>
+                           </tr>
+                        @empty
+                             <tr>
+                                <td colspan="2" class="px-6 py-12 text-center text-gray-500 dark:text-gray-400">
+                                    <div class="flex flex-col items-center justify-center">
+                                        <x-heroicon-o-building-office class="h-12 w-12 text-gray-300 dark:text-gray-600 mb-3" />
+                                        <p class="font-medium">{{ __('No divisions found') }}</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                 </table>
+            </div>
 
-  <div class="hidden sm:block overflow-x-scroll">
-    <table class="w-full divide-y divide-gray-200 dark:divide-gray-700">
-      <thead class="bg-gray-50 dark:bg-gray-900">
-        <tr>
-          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300">
-            {{ __('Division') }}
-          </th>
-          <th scope="col" class="relative px-6 py-3">
-            <span class="sr-only">{{ __('Actions') }}</span>
-          </th>
-        </tr>
-      </thead>
-      <tbody class="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
-        @foreach ($divisions as $division)
-          <tr>
-            <td class="px-6 py-4 text-sm font-medium text-gray-900 dark:text-white">
-              {{ $division->name }}
-            </td>
-            <td class="relative flex justify-end gap-2 px-6 py-4">
-              <x-button wire:click="edit({{ $division->id }})" class="px-2 py-1">
-                <x-heroicon-o-pencil class="w-4 h-4" />
-              </x-button>
-              <x-danger-button wire:click="confirmDeletion({{ $division->id }}, '{{ $division->name }}')" class="px-2 py-1">
-                <x-heroicon-o-trash class="w-4 h-4" />
-              </x-danger-button>
-            </td>
-          </tr>
-        @endforeach
-      </tbody>
-    </table>
-  </div>
+            <!-- Mobile List -->
+            <div class="grid grid-cols-1 sm:hidden divide-y divide-gray-200 dark:divide-gray-700">
+                @foreach ($divisions as $division)
+                     <div class="p-4 flex justify-between items-center group">
+                         <span class="font-medium text-gray-900 dark:text-white">{{ $division->name }}</span>
+                         <div class="flex items-center gap-3">
+                             <button wire:click="edit({{ $division->id }})" class="text-blue-600 dark:text-blue-400">
+                                 <x-heroicon-m-pencil-square class="h-5 w-5" />
+                             </button>
+                             <button wire:click="confirmDeletion({{ $division->id }}, '{{ $division->name }}')" class="text-red-600 dark:text-red-400">
+                                 <x-heroicon-m-trash class="h-5 w-5" />
+                             </button>
+                         </div>
+                     </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+    
+     <!-- Modals (Retaining functionality) -->
+      <x-confirmation-modal wire:model="confirmingDeletion">
+        <x-slot name="title">{{ __('Delete Division') }}</x-slot>
+        <x-slot name="content">{{ __('Are you sure you want to delete') }} <b>{{ $deleteName }}</b>?</x-slot>
+        <x-slot name="footer">
+            <x-secondary-button wire:click="$toggle('confirmingDeletion')" wire:loading.attr="disabled">{{ __('Cancel') }}</x-secondary-button>
+            <x-danger-button class="ml-2" wire:click="delete" wire:loading.attr="disabled">{{ __('Confirm Delete') }}</x-danger-button>
+        </x-slot>
+      </x-confirmation-modal>
 
-  <x-confirmation-modal wire:model="confirmingDeletion">
-    <x-slot name="title">
-      {{ __('Delete Division') }}
-    </x-slot>
+      <x-dialog-modal wire:model="creating">
+        <x-slot name="title">{{ __('New Division') }}</x-slot>
+        <x-slot name="content">
+            <form wire:submit="create">
+                 <div>
+                    <x-label for="create_name" value="{{ __('Division Name') }}" />
+                    <x-input id="create_name" class="mt-1 block w-full" type="text" wire:model="name" />
+                    <x-input-error for="name" class="mt-2" />
+                 </div>
+            </form>
+        </x-slot>
+        <x-slot name="footer">
+            <x-secondary-button wire:click="$toggle('creating')" wire:loading.attr="disabled">{{ __('Cancel') }}</x-secondary-button>
+            <x-button class="ml-2" wire:click="create" wire:loading.attr="disabled">{{ __('Add Division') }}</x-button>
+        </x-slot>
+      </x-dialog-modal>
+      
+       <x-dialog-modal wire:model="editing">
+        <x-slot name="title">{{ __('Edit Division') }}</x-slot>
+        <x-slot name="content">
+            <form wire:submit.prevent="update">
+                 <div>
+                    <x-label for="edit_name" value="{{ __('Division Name') }}" />
+                    <x-input id="edit_name" class="mt-1 block w-full" type="text" wire:model="name" />
+                    <x-input-error for="name" class="mt-2" />
+                 </div>
+            </form>
+        </x-slot>
+        <x-slot name="footer">
+            <x-secondary-button wire:click="$toggle('editing')" wire:loading.attr="disabled">{{ __('Cancel') }}</x-secondary-button>
+            <x-button class="ml-2" wire:click="update" wire:loading.attr="disabled">{{ __('Save Changes') }}</x-button>
+        </x-slot>
+      </x-dialog-modal>
 
-    <x-slot name="content">
-      {{ __('Are you sure you want to delete') }} <b>{{ $deleteName }}</b>?
-    </x-slot>
-
-    <x-slot name="footer">
-      <x-secondary-button wire:click="$toggle('confirmingDeletion')" wire:loading.attr="disabled">
-        {{ __('Cancel') }}
-      </x-secondary-button>
-
-      <x-danger-button class="ml-2" wire:click="delete" wire:loading.attr="disabled">
-        {{ __('Confirm') }}
-      </x-danger-button>
-    </x-slot>
-  </x-confirmation-modal>
-
-  <x-dialog-modal wire:model="creating">
-    <x-slot name="title">
-      {{ __('New Division') }}
-    </x-slot>
-
-    <x-slot name="content">
-      <form wire:submit="create">
-        <x-label for="create_name">{{ __('Division Name') }}</x-label>
-        <x-input id="create_name" class="mt-1 block w-full" type="text" wire:model="name" autocomplete="off" />
-        @error('name')
-          <x-input-error for="create_name" class="mt-2" message="{{ $message }}" />
-        @enderror
-      </form>
-    </x-slot>
-
-    <x-slot name="footer">
-      <x-secondary-button wire:click="$toggle('creating')" wire:loading.attr="disabled">
-        {{ __('Cancel') }}
-      </x-secondary-button>
-
-      <x-button class="ml-2" wire:click="create" wire:loading.attr="disabled">
-        {{ __('Add') }}
-      </x-button>
-    </x-slot>
-  </x-dialog-modal>
-
-  <x-dialog-modal wire:model="editing">
-    <x-slot name="title">
-      {{ __('Edit Division') }}
-    </x-slot>
-
-    <x-slot name="content">
-      <form wire:submit.prevent="update">
-        <x-label for="edit_name">{{ __('Division Name') }}</x-label>
-        <x-input id="edit_name" class="mt-1 block w-full" type="text" wire:model="name" autocomplete="off" />
-        @error('name')
-          <x-input-error for="edit_name" class="mt-2" message="{{ $message }}" />
-        @enderror
-      </form>
-    </x-slot>
-
-    <x-slot name="footer">
-      <x-secondary-button wire:click="$toggle('editing')" wire:loading.attr="disabled">
-        {{ __('Cancel') }}
-      </x-secondary-button>
-
-      <x-button class="ml-2" wire:click="update" wire:loading.attr="disabled">
-        {{ __('Save') }}
-      </x-button>
-    </x-slot>
-  </x-dialog-modal>
 </div>

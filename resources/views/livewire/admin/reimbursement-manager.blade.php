@@ -87,15 +87,13 @@
                                 <td class="px-6 py-4 text-right">
                                     @if($claim->status === 'pending')
                                         <div class="flex justify-end gap-2">
-                                        <x-button wire:click="approve('{{ $claim->id }}')" wire:confirm="{{ __('Approve this claim?') }}" class="!bg-green-600 hover:!bg-green-700 focus:!ring-green-500 !px-3 !py-1.5 transition-colors">
-                                            <x-heroicon-m-check class="mr-1.5 h-4 w-4" />
-                                            {{ __('Approve') }}
-                                        </x-button>
-                                        <x-danger-button wire:click="reject('{{ $claim->id }}')" wire:confirm="{{ __('Reject this claim?') }}" class="!px-3 !py-1.5 transition-colors">
-                                            <x-heroicon-m-x-mark class="mr-1.5 h-4 w-4" />
-                                            {{ __('Reject') }}
-                                        </x-danger-button>
-                                    </div>
+                                            <button wire:click="approve('{{ $claim->id }}')" wire:confirm="{{ __('Approve this claim?') }}" class="text-gray-400 hover:text-green-600 transition-colors" title="{{ __('Approve') }}">
+                                                <x-heroicon-m-check-circle class="h-6 w-6" />
+                                            </button>
+                                            <button wire:click="reject('{{ $claim->id }}')" wire:confirm="{{ __('Reject this claim?') }}" class="text-gray-400 hover:text-red-600 transition-colors" title="{{ __('Reject') }}">
+                                                <x-heroicon-m-x-circle class="h-6 w-6" />
+                                            </button>
+                                        </div>
                                     @else
                                         <span class="text-xs text-gray-400">{{ __('Completed') }}</span>
                                     @endif
